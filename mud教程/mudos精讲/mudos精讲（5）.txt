@@ -1,0 +1,352 @@
+MUDOS
+—————————————————————
+综合地介绍MUD运行平台（MUDOS）
+—————————————————————————  
+mudos精讲（5） 
+
+each(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+each() - 分次传回一个映射变数 (mapping) 的各个
+(key, value) 的内容.
+函数语法:
+mixed *each( mapping m, int reset );
+函数用法:
+each() 函式把一个映射变数里的每对 (key, value) 一次
+一次地传回. each() 传回来的次序与 keys() 和 values()
+两个函式传回来的次序一样. 当 each() 读到映射变数的尾
+端时, 会传回一个空的向量 (null vector, 即 (0,0)). 而
+在传回空向量之後, 下一个 each() 传回的内容又会从头开
+始.
+
+当不同的物件使用 each() 读取相同的映射变数时, 一定都会
+从头开始. 虽然 MudOS 有单执行绪 (single thread) 的性质
+, 但是也不致於让 each() 执行时出现问题. ( 实际上一个物
+件无法於使用 each() 读取映射函数读到一半时, 跳开目前读
+(key, value) 的位置)
+
+如果指定第二个参数为 1, 则 each() 会重新从头开始读取.
+
+□例:
+
+mixed *pair;
+
+while ((pair = each(x)) != ({})) {
+write("key = " + pair[0] + "\n");
+write("value = " + pair[1] + "\n");
+}
+参考函数:
+keys(3), values(3)
+手册翻译:
+Phoebus@ZH 97.Feb.7. (Writen 5/23/97)
+
+ed(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+ed() - 编辑一个档案.
+函数语法:
+void ed( string file, string exit_fn, int restricted );
+void ed( string file, string write_fn, string exit_fn,
+int restricted );
+
+无传回值 ed( 字串 file, 字串 exit_fn, 整数 restricted );
+无传回值 ed( 字串 file, 字串 write_fn, 字串 exit_fn,
+整数 restricted );
+函数用法:
+这个函式只有在定义了 __OLD_ED__ 之後有效.
+
+这个函式很有趣. 它会启动一个文书编辑程式来编辑一个指定
+的档案. 这个程式与 UNIX 的 ed 程式几乎相容. 当你进入这
+个程式後, 可以输入 h 了解用法.
+
+write_fn 函式可以让 mudlib 控制档案的写入权限和档案修
+改纪录. 当编辑程式写入一个档案时, MUD 驱动程式 (driver)
+会呼叫 write_fn 两次. 第一次呼叫时, 是在写入档案之前,
+而 flag 旗标为 0. 如果被呼叫的函式传回「真」值 (true,
+即为非零值) , 编辑程式就会继续写入档案. 第二次呼叫时,
+是在写入档案完成之後, 此时的 flag 旗标为非零值. 被呼叫
+的函式必须符合以下的格式:
+
+int write_fn(string fname, int flag)
+
+离开编辑程式时, MUD 驱动程式 (driver) 会呼叫 exit_fn
+函式. 这个被呼叫的函式可以让 mudlib 清除. 这个函式要
+符合以下的格式:
+
+void exit_fn()
+
+而可以省略的 restricted 旗标则限制编辑程式的功能.
+像是: 插入一个档案, 以不同的名字储存档案. 这些功能
+在 restricted 旗标为「真」值时, 就无法使用.
+参考函数:
+regexp(3), valid_read(4), valid_write(4),
+get_save_file_name(4)
+手册翻译:
+Phoebus@ZH 97.Feb.7. (Writen 5/23/97)
+
+ed_cmd(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+ed_cmd() - 对一个正在执行的 ed 工作 (session)
+送出一个命令.
+函数语法:
+string ed_cmd( string cmd )
+
+字串 ed_cmd( 字串 cmd )
+函数用法:
+这个函式只有在 __OLD_ED__ 不予定义 (define) 时有效.
+
+命令 cmd 会被送到一个正在执行的 ed 工作 (session) ,
+并传回命令执行後输出的结果.
+手册翻译:
+Phoebus@ZH 97.Feb.12. (Writen 5/23/97)
+
+ed_start(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+ed_start() - 开始执行一个 ed 工作.
+函数语法:
+string ed_start( string file | void,
+int restricted | void )
+
+字串 ed_start( 字串 file 或 无参数,
+整数 restricted 或 无参数 )
+函数用法:
+这个函式只有 __OLD_ED__ 不予定义 (define) 时有效.
+
+这个函式开始执行内部的文书编辑程式, 可以指定或不指定
+要予以编辑的档案 file. 函式会传回执行完 ed 的编辑结
+果. 当 ed 程式仍在执行时, 可以使用 ed_cmd() 执行 ed
+的命令.
+
+如果 restricted 的值为 1 , 所有更改档案的命令都会被
+视为无效.
+
+一个物件同一时间内只能执行一个 ed 工作.
+手册翻译:
+Phoebus@ZH 97.Feb.12. (Writen 5/23/97)
+
+enable_commands(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+enable_commands() - 允许物件使用玩家 (player) 的命令.
+函数语法:
+void enable_commands( void );
+
+无传回值 enable_commands( 无参数 );
+函数用法:
+enable_commands() 把 this_object() 标记为活著 (living)
+的物件, 并允许它使用 add_action() 所加入的命令 (要使用
+command() 函式) . 呼叫 enable_commands() 时, MUD 驱动
+程式 (driver) 会寻找内部的 catch_tell() 函式. 如果找到
+了此函式, 每一次有讯息传给此一个物件时 (例如 say() )
+, 驱动程式就会呼叫 catch_tell() 一次.
+
+已知的问题:
+请勿在 create() 函式以外的地方呼叫 enable_commands()
+否则会出现奇怪的问题.
+参考函数:
+this_object(3), living(3), add_action(3), command(3),
+catch_tell(4), say(3), create(4)
+手册翻译:
+Phoebus@ZH 97.Feb.12. (Writen 5/23/97)
+
+enable_wizard(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+enable_wizard() - 将巫师的特权给予一个物件.
+函数语法:
+void enable_wizard( void );
+
+无传回值 enable_wizard( 无参数 );
+函数用法:
+任何呼叫 enable_wizard() 的可互动 (interactive) 物件,
+会让 wizardp() 对此物件传回真值 (true). 而
+enable_wizard() 可以让这个物件有以下三项特权:
+
+1. 如果编译 MUD 驱动程式当时定义 RESTRICTED_ED 选项,
+则可以使用 ed 的受限制模式 (restricted modes).
+
+2. 可以收到详细的执行错误讯息.
+
+3. 可以使用 trace(3) 和 traceprefix(3) 函式.
+参考函数:
+disable_wizard(3), wizardp(3)
+手册翻译:
+Phoebus@ZH 97.Feb.12. (Writen 5/23/97)
+
+environment(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+environment() - 传回一个物件所身处的环境.
+函数语法:
+object environment( object ob );
+
+物件 environment( 物件 ob );
+函数用法:
+传回含有物件 ob 的环境物件. 如果没有指定参数 (argument)
+, ob 预设为 this_object().
+参考函数:
+this_object(3)
+手册翻译:
+pock @ FF 97.Feb.12. (Writen 5/23/97)
+
+error(3) LP MudOSv21c7 error(3)
+
+函数名称:
+error - 产生一个执行时段 (run_time) 错误.
+函数语法:
+void error( string err );
+
+无传回值 error( 字串 err );
+函数用法:
+呼叫 error() 时, 会产生一个执行时段错误 err. 并中止
+目前正在执行的执行绪脉络 (thread). 而发生错误的程式
+会被追踪错误的出处, 并纪录在除错纪录 (debug log) 的
+档案中.
+参考函数:
+catch(3), throw(3), error_handler(4)
+
+手册翻译: Phoebus@ZH 97.Feb.12. (Writen 5/23/97)
+
+errorp(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+errorp() - 判断一个指定的变数是否为错误码 (error code).
+函数语法:
+int errorp( mixed arg );
+
+整数 errorp( 混合 arg );
+函数用法:
+如果参数 arg 是一个整数值的错误码, errorp() 传回 1 .
+
+您可能会修改超越函式 (emulated functions, efun), 而能
+传回一个标准的错误码. 所以程式可以写成像下面的样子:
+
+if (errorp(result = efun_call()))
+printf("error = %d\n", result);
+
+在以後的计划中, 我们会加入一个新的函式 perror(result)
+用来传回整数值的错误代码与一个错误讯息的字串.
+参考函数:
+nullp(3), undefinedp(3)
+手册翻译:
+Phoebus@ZH 97.Feb.12. (Writen 5/23/97)
+
+eval_cost(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+eval_cost() - 传回执行耗费时间 (evaluation cost) 还
+剩多少.
+函数语法:
+void eval_cost()
+
+无传回值 eval_cost()
+函数用法:
+eval_cost() 在驱动程式 (driver) 判断此时是否陷入一个
+无穷回圈之前, 传回是否可以执行的指示数字.
+参考函数:
+catch(3), error(3), throw(3), error_handler(4),
+set_eval_limit(3), reset_eval_cost()
+手册翻译:
+Phoebus@ZH 97.Feb.12. (Writen 5/23/97)
+
+evaluate(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+evaluate() - 执行一个函式指标 (function pointer)
+函数语法:
+mixed evaluate(mixed f, ...)
+
+混合 evaluate( 混合 f, ... )
+函数用法:
+如果 f 是一个函式, 就会以第二个参数以後 (即上面 ...
+的地方) 为 f 使用的参数呼叫 f. 而 f 如果有传回值,
+evaluate( f, ... ) 就相当于直接呼叫 f 的结果.
+手册翻译:
+Phoebus@ZH 97.Feb.12. (Writen 5/23/97)
+
+exec(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+exec() - 将一个可互动的 (interactive) 玩家 (player)
+物件切换连结 (connection) 到另外一个物件上.
+函数语法:
+int exec( object to, object from );
+
+整数 exec( 物件 to, 物件 from );
+函数用法:
+这个函式允许指定的物件把可互动的连结 (link) 迁移到另
+外一个物件上. 也就是说, 成功地执行 exec( to, from )
+之後, interactive( to ) 会传回 1, 而 interactive( from )
+会传回 0. 而控制 from 的玩家会转移控制权到 to 的身上.
+
+请注意这个函式的权力非常大, 不当地使用会危及 MUD 的
+系统安全. 正确地限制使用此函式的方法是另外写一个同名的
+模拟超越函式 (simulated emulated function, simul_efun)
+, 并使用 valid_override(4) 来限制此一模拟超越函式的使
+用. (意即 efun::exec() )
+
+exec() 函式在成功地转换之後传回 1, 转换失败则传回 0.
+参考函数:
+interactive(3), valid_override(4)
+手册翻译:
+Phoebus@ZH 97.Feb.12. (Writen 5/23/97)
+
+exp(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+exp() - 以一个浮点数为指数, 自然对数 e 为底数
+计算其值.
+函数语法:
+float exp( float f );
+
+浮点数 exp( 浮点数 f );
+函数用法:
+exp() 传回 e^f 的值.
+参考函数:
+log(3), pow(3), sqrt(3)
+手册翻译:
+Phoebus@ZH 97.Feb.12. (Writen 5/23/97)
+
+explode(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+explode() - 打断一个字串.
+函数语法:
+string *explode( string str, string del );
+
+字串 *explode( 字串 str, 字串 del );
+函数用法:
+explode() 传回一个字串的阵列 (array), 此阵列是
+字串 str 以 del 分界打断的片段.
+□例:
+explode( str, " " );
+
+这样会传回一个 str 中所有英文单字的字串阵列 (假设
+str 是英文句子, 每一个单字由空白字元隔开).
+参考函数:
+sscanf(3), extract(3), replace_string(3), strsrch(3)
+手册翻译:
+Phoebus@ZH 97.Feb.12. (Writen 5/23/97)
+
+export_uid(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+export_uid() - 设定一个物件的使用者识别名称 (user id,
+uid).
+函数用法:
+int export_uid( object ob );
+
+整数 export_uid( 物件 ob );
+函数用法:
+设定 ob 的使用者识别名称 (uid) 为 this_object() 的
+有效使用者识别名称 (effective user id, effective uid).
+这个函式只有在 ob 的有效使用者识别名称为 0 时有效.
+参考函数:
+this_object(3), seteuid(3), getuid(3), geteuid(3),
+previous_object(3), valid_seteuid(4)
+手册翻译:
+Phoebus@ZH 97.Feb.12. (Writen 5/23/97)
+
+ 

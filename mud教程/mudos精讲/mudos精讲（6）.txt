@@ -1,0 +1,328 @@
+MUDOS
+—————————————————————
+综合地介绍MUD运行平台（MUDOS）
+—————————————————————————  
+mudos精讲（6） 
+
+functionp(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+functionp() - 判断指定的变数是否为一个函式指标
+(function pointer). 如果是函式指标,
+则再判断为何种型态.
+函数语法:
+int functionp( mixed arg );
+
+整数 functionp( 混合 arg );
+函数用法:
+如果 arg 是一个函式指标则传回非零值 (nonzero), 如果
+不是则传回 0.
+函式指标是一种「函式」(function) 型态的指标变数.
+以下是一个□例:
+
+f = (: obj, func :);
+
+传回的值指示出函式指标的型态, 而这些传回值被定义在
+驱动程式中的 "include/function.h" 档案中.
+
+function pointer type value
+---------------------------------------------
+call_other FP_CALL_OTHER
+lfun FP_LOCAL
+efun FP_EFUN
+simul_efun FP_SIMUL
+functional FP_FUNCTIONAL
+
+另外在某些情形下, 会加上以下的值:
+
+(有参数) FP_HAS_ARGUMENTS
+(创造函式的物件被摧毁) FP_OWNER_DESTED
+(函式无法连结) FP_NOT_BINDABLE
+
+最後三个值为位元值 (bit value), 可以用位元测试.
+FP_MASK 可以忽略这些位元值, 测试基本的函式指标型态
+
+□例:
+
+测试一个函式指标变数是否为超越函式指标:
+
+if ((functionp(f) & FP_MASK) == FP_EFUN) ...
+
+测试其是否有参数:
+
+if (functionp(f) & FP_HAS_ARGUMENTS) ...
+参考函数:
+mapp(3), stringp(3), pointerp(3), objectp(3), intp(3),
+bufferp(3), floatp(3), nullp(3), undefinedp(3),
+errorp(3), bind(3), lpc/types/function
+手册翻译:
+Phoebus@ZH 97.Jul.26. (Writen 5/23/97)
+
+file_size(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+file_size() - 取得档案的大小.
+函数语法:
+int file_size( string file );
+
+整数 file_size( 字串 file );
+函数用法:
+file_size() 传回档案 file 的位元数. 传回 -1 代表 file
+不存在, 或是您的权限无法读写此档案. 传回 -2 则代表
+file 是一个目录.
+参考函数:
+stat(3), get_dir(3)
+手册翻译:
+Phoebus@ZH 97.Feb.12. (Writen 5/23/97)
+
+filter_array(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+filter_array() - 传回一个过滤旧阵列内容的新阵列.
+函数语法:
+mixed *filter_array( mixed *arr, string fun, object ob,
+mixed extra, ... );
+mixed *filter_array( mixed *arr, function f,
+mixed extra, ... );
+
+混合 *filter_array( 混合 *arr, 字串 fun, 物件 ob,
+混合 extra, ... );
+混合 *filter_array( 混合 *arr, 函式 f,
+混合 extra, ... );
+函数用法:
+filter_array() 传回一个阵列, 这个阵列里保留 arr 经过
+物件 ob 中的函式 fun 过滤之後的结果. 每一个在阵列 arr
+中的元素 (element) 会呼叫函式 fun 一次, 并且当成 fun
+的参数 (parameter). 如果指定参数 extra 与之後的参数,
+则在每一次呼叫函式 fun 时当成第二、第三个参数....一个
+物件在 fun 传回 1 之後, 才视为成功地通过 fun 的过滤
+(之後物件也包含在传回的阵列中) . 在第二种语法中, 如果
+指定的参数是函式 f, 就与第一种语法中的 ob->fun() 的用
+法相同. 如果 arr 不是一个阵列, filter_array() 传回 0.
+参考函数:
+sort_array(3), map_array(3)
+手册翻译:
+Phoebus@ZH 97.Feb.12. (Writen 5/23/97)
+
+filter_mapping(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+filter_mapping() - 以一个函数为准, 移除一个映射变数
+中的某些元素.
+函数语法:
+mapping filter_mapping( mapping map, string fun,
+object ob, mixed extra, ... );
+mapping map_mapping( mapping map, function f,
+mixed extra, ... );
+
+映射 filter_mapping( 映射 map, 字串 fun,
+物件 ob, 混合 extra, ... );
+映射 filter_mapping( 映射 map, 函式 f,
+混合 extra, ... );
+函数用法:
+传回一个与 map 有相同关键字 (keys) 的映射变数, 而
+map 中的所有项目 (item) 都会经过 ob->fun() 或 f
+的过滤. 每一个在 map 中的元素都会呼叫 fun 或 f
+一次, 而函式 fun 或 f 的传回值会放在每一个项目之後.
+参数:
+filter_array(3), sort_array(3), map(3)
+手册翻译:
+Phoebus@ZH 97.Feb.12. (Writen 5/23/97)
+
+find_call_out LP MudOSv21c7 (7 Jul 1996)
+函数名称:
+find_call_out() - 找到行程中下一个会被呼叫的点召
+(call out)
+函数语法:
+int find_call_out( string func ):
+
+整数 find_call_out( 字串 func );
+函数用法:
+因为执行函式 func 而找到第一个点召 (call out),
+并传回剩下的时间. 如果无法找到则传回 -1.
+参考函数:
+call_out(3), remove_call_out(3), set_heart_beat(3)
+手册翻译:
+Phoebus@ZH 97.Feb.12. (Writen 5/23/97)
+
+find_living(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+find_living() - 找出一个指定识别名称 (id) 的活
+(living) 物件
+函数语法:
+object find_living( string str );
+
+物件 find_living( 字串 str );
+函数用法:
+首先找标记为活著的 (living) , 并符合识别名称 (id) 为
+str 的物件. 已经呼叫过 enable_commands() 的物件才被
+视为活著的物件. 并且此物件必须以 set_living_name()
+设定名称, 此一名称才会放进搜寻表 (hash table) 中以提
+升寻找活物件的速度.
+参考函数:
+living(3), livings(3), find_player(3), users(3),
+enable_commands(3), set_living_name(3)
+手册翻译:
+Phoebus@ZH 97.Feb.12. (Writen 5/23/97)
+
+find_object(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+find_object() - 以指定的档案名称寻找一个物件.
+函数语法:
+object find_object( string str );
+
+物件 find_object( 字串 str );
+函数用法:
+用档案名称 str 寻找一个物件. 如果要寻找的物件是一个复
+制出来的物件, 亦可以用 file_name() 传回的档案名称作为
+参数来寻找.
+参考函数:
+file_name(3), stat(3)
+手册翻译:
+Phoebus@ZH 97.Feb.12. (Writen 5/23/97)
+
+find_player(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+find_player() - 用名字寻找一个玩家
+函数语法:
+object find_player( string str );
+
+物件 find_player( 字串 str );
+函数用法:
+与 find_living() 相似, 但是只寻找可互动的 (interactive)
+或是曾经为可互动的物件.
+参考函数:
+lower_case(3), find_living(3), livings(3), users(3),
+set_living_name(3)
+手册翻译:
+Phoebus@ZH 97.Feb.12. (Writen 5/23/97)
+
+first_inventory(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+first_inventory() - 传回一个物件内含的第一件物品
+函数语法:
+object first_inventory( mixed ob );
+
+物件 first_inventory( 混合ob );
+函数用法:
+传回物件 ob 内含的第一件物品, ob 可以是一个物件或是
+物件的档案名称.
+参考函数:
+file_name(3), next_inventory(3), all_inventory(3),
+deep_inventory(3)
+手册翻译:
+Phoebus@ZH 97.Feb.12. (Writen 5/23/97)
+
+floatp(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+floatp() - 判断指定的变数是否为浮点数
+函数语法:
+int floatp( mixed arg );
+
+整数 floatp( 混合 arg );
+函数用法:
+如果 arg 是一个浮点数则传回 1, 如果不是传回 0.
+参考函数:
+mapp(3), stringp(3), pointerp(3), objectp(3), intp(3),
+bufferp(3), functionp(3), nullp(3), undefinedp(3),
+errorp(3)
+手册翻译:
+Phoebus@ZH 97.Feb.12. (Writen 5/23/97)
+
+floor(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+floor() - 找到最靠近一个浮点数, 而小於或等於此
+浮点数的整数, 意即把一个浮点数的小数
+位舍去.
+函数语法:
+float floor( float f );
+
+浮点数 floor( 浮点数 f );
+函数用法:
+传回一个最靠近浮点数 f, 而等於或小於 f 的整数.
+参考函数:
+ceil(3), to_int(3), to_float(3)
+手册翻译:
+Phoebus@ZH 97.Feb.12. (Writen 5/23/97)
+
+function_exists(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+function_exists() - 找出含有指定函式的档案.
+函数语法:
+string function_exists( string str, object ob );
+
+字串 function_exists( 字串 str, 物件 ob );
+函数用法:
+传回定义有函式 str 之物件 ob 的档案名称. 如果函式
+str 是被定义在 ob 所继承的物件中, 传回的档案名称可
+能会与 file_name( ob ) 传回的不同.
+
+如果物件 ob 中没有定义函式 str 则传回 0.
+
+注意, function_exists() 不会检查 ob 的投影物件
+(shadows).
+参考函数:
+call_other(3), call_out(3), functionp(3),
+valid_shadow(4)
+手册翻译:
+Phoebus@ZH 97.Feb.12. (Writen 5/23/97)
+
+function_profile(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+function_profile() - 对一个物件取得函式的侧写
+(profiling) 资讯.
+函数语法:
+mixed *function_profile( object ob );
+
+混合 *function_profile( 物件 ob );
+函数用法:
+传回对 ob 或是 this_object() (如果不予指定 ob ) 的
+函式侧写资讯. 这个函式只有在驱动程式 (driver) 编译
+时有定义 PROFILE_FUNCTIONS 才有效.
+传回值:
+此函式传回一个映射变数的阵列, 每一个在 ob 中的函式
+传回的映射格式如下:
+
+([ "name" : 函式的名称,
+"calls" : 呼叫的次数,
+
+/* cpu 时间以微秒 (microsecond) 为单位 */
+"self" : cpu_time_spent_in self,
+"children" : cpu_time_spent_in_children
+])
+
+此处的用途与 CPU 时脉有关, 虽然单位为微秒
+(microseconds), 但实际上的精确度要差得多.
+参考函数:
+rusage(3), time_expression(3), opcprof(3)
+手册翻译:
+Phoebus@ZH 97.Jul.26. (Writen 5/23/97)
+
+file_name(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+file_name() - 取得一个物件的档案名称.
+函数语法:
+string file_name( object ob );
+
+字串 file_name( 物件 ob );
+函数用法:
+file_name() 传回载入 ob 时所用的档案名称. 如果物件是
+复制出来的, 则 file_name() 传回的名称并不是实际上磁
+碟中所用的名称, 而是在原来的档案名称之後加上「#」 号
+, 再加上物件的复制编号. 当游戏启动时, 物件的复制编号
+从 0 开始起算, 每复制一个相同的物件就增加一号. 所以
+每一个复制出来的物件都有自己独特的编号. 如果没有指定
+ob, 则 ob 预设为 this_object().
+手册翻译:
+Phoebus@ZH 97.Feb.12. (Writen 5/23/97)
+
+ 

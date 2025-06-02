@@ -1,0 +1,159 @@
+MUDOS
+—————————————————————
+综合地介绍MUD运行平台（MUDOS）
+—————————————————————————
+  
+mudos精讲（7） 
+
+getuid(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+getuid() - 传回一个物件的使用者识别名称 (user id, uid)
+函数语法:
+string getuid( object ob );
+
+字串 getuid( 物件 ob );
+函数语法:
+传回一个物件的使用者识别名称. 一个物件的 uid 由物件
+创造当时的 creator_file() 函式决定.
+参考函数:
+seteuid(3), geteuid(3), export_uid(3), this_object(3),
+previous_object(3), creator_file(4), valid_seteuid(4)
+手册翻译:
+Phoebus@ZH 97.Feb.14. (Writen 5/23/97)
+
+get_char(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+get_char - 让之後输入的字元送往一个指定的函数.
+函数语法:
+varargs void get_char( string | function fun,
+int flag, ... );
+
+不定参数 无传回值 get_char( 字串 或 函式指标 fun,
+整数 flag, ... );
+函数用法:
+让使用者之後输入的字元送往函式指标 fun, 作为 fun 的
+参数. 驱动程式 (driver) 不会分析 (parse) 输入的字元.
+
+请注意 get_char 是「非阻隔性」 (non-blocking) 的, 意
+即呼叫 get_char 的物件不会暂停下来等待使用者的输入动
+作. 呼叫 get_char 的物件会继续执行随後任何的程式叙述.
+在收到输入的字元之前, 指定的函式 fun 不会被呼叫.
+
+如果同一个物件呼叫 get_char() 超过一次以上, 就只有第
+一次的呼叫有效.
+
+如果可以选择的参数 flag 指定为非零值 (non-zero), 则
+玩家输入的字元就不会回传 (echo) , 物件被窃听时也不会
+回传 (用在输入密码时很有用).
+
+呼叫函式指标 fun 时, 使用者输入的字元会被当作是函式
+的第一个参数 (变数型态为字串) . 在 flag 之後指定的参
+数会当作函式 fun 的其他参数.
+问题:
+get_char 在 MudOS 0.9 及更早的版本有一个非常明显的问
+题. 在较差之远端终端机协定 (telnet negotiation) 的许
+多作业系统上 (按: 所有市场上早期的主流品牌之工作站)
+, get_char 会使画面输出的结果变得非常奇怪. 除非这些
+问题得到解决, 在一般的 mudlib 程式码中, 还是建议别用
+get_char 这个函式. (目前只知道 get_char 对使用 NeXT
+工作站连线的使用者不会有此问题. )
+参考函数:
+call_other(3), call_out(3), input_to(3)
+手册翻译:
+Phoebus@ZH 97.Feb.14. (Writen 5/23/97)
+
+get_config(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+get_config() - 询问一些驱动程式 (driver) 的系统设定值
+(config settings)
+函数语法:
+string | int get_config( int );
+
+字串 或 整数 get_config( 整数 );
+函数用法:
+这个超越函式 (efun) 用来询问一些驱动程式的系统设定值.
+请参考 runtime_config.h 以了解目前有哪些可以使用的选
+择项目.
+参考函数:
+/include/runtime_config.h
+手册翻译:
+Phoebus@ZH 97.Feb.14. (Writen 5/23/97)
+
+get_dir(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+get_dir() - 传回有关一个档案系统目录 (filesystem
+directory) 的资讯.
+函数语法:
+mixed *get_dir( string dir, int default: 0 );
+
+混合 *get_dir( 字串 dir, 整数 预设值: 0 );
+函数用法:
+如果 dir 是一个档案名称 (可以使用 * 或是 ? 号这种
+通用字元 (wildcards) ), 则传回一个符合指定名称的字串
+阵列 (array of strings) . 如果 dir 是一个目录名称 (
+名称以一个 / 结束, 例如: "/u/", "/adm/" 等等) , 则
+会传回目录中所有的档案名称.
+
+如果第二的参数为 -1 , get_dir 会传回一个子阵列的阵列
+( array of subarrays) , 子阵列的格式为:
+
+({ filename, size_of_file, last_time_file_touched })
+
+({ 档案名称, 档案大小, 最後一次的档案修改日期 })
+
+档案名称为一个字串, 而最後一次的档案修改日期是一个整
+数, 为自从 1970 年 1 月 1 日起算的秒数. (格式与
+time(3) 函式一样) . 档案大小的值与 file_size(3) 函式
+传回的值相同; 档案大小的单位为位元 (bytes) , 如果档
+案大小为 -2 , 表示档案为一个目录.
+参考函数:
+file_size(3), stat(3), time(3)
+手册翻译:
+Phoebus@ZH 97.Feb.14. (Writen 5/23/97)
+
+geteuid(3) LP MudOSv21c7 (7 Jul 1996) geteuid(3)
+
+函数名称:
+geteuid() - 传回一个物件或是一个函式的有效使用者识别
+名称 (effective user id, euid)
+函数语法:
+string geteuid( object | function );
+
+字串 geteuid( 物件 或 函式指标 );
+函数用法:
+如果参数是一个物件, geteuid 会传回物件的有效使用者识别
+名称 (euid) . 如果指定的参数是一个函式指标 (function
+pointer, 变数型态为 function), 则会传回创造这个函式指
+标之物件的 euid . 如果这个函式指标的变数, 在此物件创造
+时没有 euid, 则会使用物件的使用者识别名称
+(user id, uid) 代替.
+参考函数:
+seteuid(3), getuid(3), functionp(3), export_uid(3),
+previous_object(3), this_object(3), valid_seteuid(4)
+
+手册翻译: Phoebus@ZH 97.Feb.14. (Writen 5/23/97)
+
+generate_source(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+generate_source() - 产生与指定物件相对照的 C 程式码
+函数语法:
+void generate_source( string file,
+void | string out_file );
+
+无传回值 generate_source( 字串 file,
+无参数 或 字串 out_file );
+函数用法:
+generate_source() 呼叫 LPC -> C 的编译程式, 产生指定
+物件的原始码. 如果没有指定输出的档案, 则输出的结果会
+放在 SAVE_BINARIES 的目录.
+参考函数:
+valid_asm(4), valid_compile_to_c(4)
+手册翻译:
+Phoebus@ZH 97.Feb.13. (Writen 5/23/97)
+
+ 

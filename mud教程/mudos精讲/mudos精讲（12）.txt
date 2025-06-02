@@ -1,0 +1,95 @@
+MUDOS
+—————————————————————
+综合地介绍MUD运行平台（MUDOS）
+—————————————————————————  
+mudos精讲（12） 
+
+new(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+new() - 载入并复制一个物件.
+函数语法:
+object new( string name );
+
+物件 new( 字串 name );
+用法;
+以 name 定义的档案名称载入一个新的物件, 并且给此物件一个
+独特的名称. 此函式传回这个新的物件. 一个 environment()
+为非零值的物件无法复制.
+参考函数:
+clone_object(3), destruct(3), move_object(3)
+手册翻译:
+Phoebus@ZH 97.Apr.24. (Writen 5/23/97)
+
+nullp(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+nullp() - 判断指定的一个变数是否为空值 (null).
+函数语法:
+int nullp( mixed arg );
+
+整数 nullp( 混合 arg );
+函数用法:
+如果 arg 是空值就传回 1. arg 在以下三种状况视为空值:
+
+1. arg 还未初始化 (initialize).
+
+2. arg 指向一个已被摧毁的物件.
+
+3. arg 是一个函式的参数, 对应到一个实际上已经遗失的参数.
+参考函数:
+mapp(3), stringp(3), pointerp(3), objectp(3), intp(3),
+bufferp(3), floatp(3), functionp(3), undefinedp(3),
+errorp(3)
+手册翻译:
+Phoebus@ZH 97.Apr.24. (Writen 5/23/97)
+
+notify_fail(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+notify_fail() - 传回一段错误讯息.
+函数语法:
+int notify_fail( string | function str );
+
+整数 notify_fail( 字串 或 函式指标 str );
+函数用法:
+以 str 代替系统在命令无效时传回的错误讯息 :「什麽 ?」
+当 add_action() 设定的动作传回 0 时, 就会显示此段 str
+的讯息. 使用 notify_fail() 显示错误讯息是一个比较好的
+方法, 因为此函式允许其他的物件能对同一个命令作出反应.
+别用 write() 来显示一段错误讯息, 因为这样做需要传回 1.
+( 除非你想在看到「什麽 ?」之後再看到 write() 的结果 )
+如果你传回 1, 其他的物件就没有机会对使用者的命令作出反应.
+
+如果参数用的是一个函式指标, 则会呼叫指定的函式. 如果此
+函式传回一个字串, 此字串就会当作错误讯息. 只要在此函式
+中正确地设定 this_player(), 就可以使用 write().
+
+如果 notify_fail() 被呼叫一次以上, 只有最後一次的呼叫有效.
+
+这个函式主要是传回比「什麽 ?」要来得清楚的错误讯息.
+参考函数:
+notify_fail() 永远传回 0.
+手册翻译:
+Phoebus@ZH 97.Apr.24. (Writen 5/23/97)
+
+next_inventory(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+next_inventory() - 传回同一物件内容物 (inventory)中的
+下一个物件.
+函数语法:
+object next_inventory( object ob );
+
+物件 next_inventory( 物件 ob );
+函数用法:
+传回在物件的内容物中, 在 ob 之後的下一个物件.
+
+警告: 如果物件 ob 被 move_object() 移走, 则
+next_inventory() 会从新的内容物列表中传回物件.
+参考函数:
+first_inventory(3), all_inventory(3), deep_inventory(3)
+手册翻译:
+Phoebus@ZH 97.Apr.24. (Writen 5/23/97)
+
+ 

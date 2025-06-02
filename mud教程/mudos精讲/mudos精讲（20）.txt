@@ -1,0 +1,99 @@
+MUDOS
+—————————————————————
+综合地介绍MUD运行平台（MUDOS）
+—————————————————————————
+  
+mudos精讲（20） 
+
+write_file(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+write_file() - appends a string to a file
+函数语法:
+int write_file( string file, string str, int flag );
+
+整数 write_file( 字串 file, 字串 str, 整数 flag );
+函数用法:
+将字串 str 加到档案 file 中. 成功则传回 1, 失败传回 0.
+如果 flag 为 1, 则 write_file() 会覆写 (overwrite) file
+为 str, 而非加入 str.
+参考函数:
+read_file(3), write_buffer(3), file_size(3)
+手册翻译:
+Phoebus@ZH 97.Jul.25. (Writen 5/23/97)
+
+write(3) MusOS v21c2 (7 Jul 1996)
+
+函数名称:
+write() - 对目前的玩家送出讯息.
+函数语法:
+void write( mixed str );
+
+无传回值 write( 混合 str );
+函数用法:
+送讯息 str 给目前的玩家. str 可以是一个数字, 而此数字
+将转换成字串送出.
+参考函数:
+message(3), tell_object(3), tell_room(3), shout(3), say(3)
+手册翻译:
+Phoebus@ZH 97.jul.25. (Writen 5/23/97)
+
+write_buffer(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+write_buffer() - 将一个暂存区 (buffer) 写入一个档案,
+或从某个资料来源读进一个暂存区.
+函数语法:
+int write_buffer( string | buffer dest, int start,
+mixed source );
+
+整数 write_buffer( 字串 或 暂存区 dest, 整数 start,
+混合 source );
+函数用法:
+如果 dest 是一个档案, 则 source 必须为一个整数 (并以
+network-byte-order 写入档案) 、一个暂存区、或一个字串,
+而从档案 dest 的第 start 位元组开始写入 source 的内容.
+
+如果 dest 是一个暂存区, 则 source 会从第 start 位元组
+开始写入暂存区. 如果 source 是整数, 则会以
+network-byte-order 的格式写入.
+参考函数:
+read_buffer(3), allocate_buffer(3)
+作者:
+Truilkan
+手册翻译:
+Phoebus@ZH 97.jul.25. (Writen 5/23/97)
+
+write_bytes(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+write_bytes() - 将连续的位元组写入档案.
+函数语法:
+int write_bytes( string path, int start,
+string series );
+
+整数 write_bytes( 字串 path, 整数 start,
+字串 series );
+函数用法:
+write_bytes() 以连续的位元组, 从档案 path 的第 start
+位元组开始写入. 如果失败则传回 0, 成功传回 1.
+参考函数:
+write_file(3), read_bytes(3)
+手册翻译:
+Phoebus@ZH 97.jul.25. (Writen 5/23/97)
+
+wizardp(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+wizardp() - 判断指定的物件是否执行过 enable_wizard()
+函数语法:
+int wizardp( object );
+
+整数 wizardp( 物件 );
+函数用法:
+如果 arg 曾执行过 enable_wizard(), wizardp() 就传回 1.
+参考函数:
+disable_wizard(3), enable_wizard(3)
+手册翻译:
+Phoebus@ZH 97.jul.25. (Writen 5/23/97)
+ 

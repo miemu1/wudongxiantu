@@ -1,0 +1,57 @@
+MUDOS
+—————————————————————
+综合地介绍MUD运行平台（MUDOS）
+—————————————————————————
+  
+mudos精讲（19） 
+
+virtualp(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+virtualp() - 判断指定的变数是否指向一个虚拟 (virtual)
+物件.
+函数语法:
+int virtualp( object arg );
+
+整数 virtualp( 物件 arg );
+函数用法:
+如果对 arg 来说, objectp() 为 1, 并设定 O_VIRTUAL
+旗标, virtualp() 就传回真值 (即 1) . 经由主宰物件
+(master.c) 之 compile_object 函式创造出来的物件,
+驱动程式 (driver) 皆对其设定 O_VIRTUAL 旗标.
+参考函数:
+clonep(3), userp(3), wizardp(3), objectp(3), new(3),
+clone_object(3), call_other(3), file_name(3)
+手册翻译:
+Phoebus@ZH 97.jul.25. (Writen 5/23/97)
+
+values(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+values() - 从一个映射变数的 (关键字, 内容值)
+( (keys, values) ) 中, 以阵列传回内容值.
+函数语法:
+mixed *values( mapping m );
+
+混合 *values( 映射 m );
+函数用法:
+values() 传回一个阵列. 此阵列为映射变数 m 中,
+(关键字, 内容值) 的所有内容值元素.
+
+□例:
+
+mapping m;
+
+m = (["hp" : 35, "sp" : 42, "mass" : 100]);
+
+则
+
+values(m) == ({35, 42, 100})
+
+请注意, 传回的内容值阵列, 其元素顺序与关键字的顺序一样.
+参考函数:
+keys(3), each(3)
+手册翻译:
+Phoebus@ZH 97.jul.25. (Writen 5/23/97)
+
+ 

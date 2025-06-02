@@ -1,0 +1,451 @@
+MUDOS
+—————————————————————
+综合地介绍MUD运行平台（MUDOS）
+—————————————————————————  
+mudos精讲（16） 
+
+rusage(3) MudOS v21c2 (7 Jul 1996)
+
+函数名称:
+rusage() - 报告以系统呼叫 (system call) getrusage() 收集的
+资讯.
+函数语法:
+mapping rusage( void );
+
+映射 rusage( 无参数 );
+函数用法:
+这个超越函式 (efun) 透过 getrusage() 的系统呼叫收集资讯.
+请参阅 getrusage() 线上手册的说明以查询收集的资讯种类.
+有的系统没有 getrusage(), 但是有 times() 的系统呼叫. 在
+这种系统里只有 utime 和 stime 两项资料. 报告的时间单位
+是微秒 (millisecond).
+
+以下是 rusage() 的□例:
+
+void
+create()
+{
+mapping info;
+
+info = rusage();
+write("使用者时间 = " + info["utime"] + "微秒\n");
+write("系统时间 = " + info["stime"] + "微秒\n");
+}
+
+可以使用的项目有:
+
+utime, stime, maxrss, ixrss, idrss, isrss, minflt,
+majflt, nswap, inblock, oublock, msgsnd, msgrcv,
+nsignals, nvcsw, nivcsw.
+参考函数:
+time_expression(3), function_profile(3), time(3), uptime(3)
+手册翻译:
+Phoebus@ZH 97.Jun.2. (Writen 5/23/97)
+
+read_buffer(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+read_buffer() - 以缓冲区资料 (buffer) 的型态传回档案的内容,
+或是以字串型态 (string) 传回缓冲区一部份的资
+料.
+函数语法:
+string | buffer read_buffer( string | buffer src,
+int start, int len );
+
+字串 或 缓冲区 read_buffer( 字串 或 缓冲区 src,
+整数 start, 整数 len );
+函数用法:
+如果 src 是一个字串 (档案名称) , 就会从 start 指定的第几
+位元组 (byte) 开始, 读取 len 指定长度的档案内容. 读取的内
+容以缓冲区的资料型态传回. 如果不指定 start 和 len , 则会读
+取整个档案的内容.
+
+如果 src 是一个缓冲区, 就从 start 指定的第几位元开始读取
+len 长度的内容. 然後以字串的型态传回.
+
+请注意, 你可以从一个档案读进缓冲区的资料, 受到编译时段组态
+档案 (runtime config file) 中定义的 maximum byte transfer
+(最大位元组传输量) 控制.
+参考函数:
+write_buffer(3), allocate_buffer(3), bufferp(3),
+read_bytes(3), write_bytes(3)
+作者:
+Truilkan
+手册翻译:
+Phoebus@ZH 97.May.24. (Writen 5/23/97)
+
+read_bytes(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+read_bytes() - 从一个档案或是一个字串读取一连串连续的位元组
+(byte).
+函数语法:
+string read_bytes( string path, int start, int length );
+
+字串 read_bytes( 字串 path, 整数 start, 整数 length );
+函数用法:
+这个函式读取 path 指定的档案内容, 从 start 指定的第几位元组
+开始读取到 length 指定长度的资料. 传回的位元组为字串的型态.
+注意, start + length 的大小绝对不可以超过档案的末端, 否则
+read_bytes() 读取的动作会失败. 如果不指定第二及第三个参数,
+则会读取整个档案.
+参考函数:
+read_file(3), write_bytes(3)
+手册翻译:
+Phoebus@ZH 97.May.24. (Writen 5/23/97)
+
+read_file(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+read_file() - 把一个档案的内容读进一个字串变数里.
+函数语法:
+string read_file( string file, int start_line,
+int number_of_lines );
+
+字串 read_file( 字串 file, 整数 start_line,
+整数 number_of_lines );
+函数用法:
+从一个档案中读入几行文字到一个字串中. 第二个和第三个参数
+可以选择. 如果只指定 file 的参数, 整个档案都会被读进一个
+字串中.
+start_line 是指定你要从档案的第几行开始读取. 如果你指定
+的行数超过档案的尾端或是指定的数字为负数, 则会传回 0.
+参考函数:
+write_file(3), read_buffer(3)
+手册翻译:
+Phoebus@ZH 97.May.24. (Writen 5/23/97)
+
+receive(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+receive() - 对目前的物件显示一段讯息.
+函数语法:
+int receive( string message );
+
+整数 receive( 字串 message );
+函数用法:
+这个超越函式 (efun) 是作为 mud 驱动程式 (driver) 的
+add_message() 函式的介面. 这个函式设计的目的是对目前
+物件显示讯息. 如果目前的物件是「可互动的」则传回 1.
+不是则传回 0. receive() 应被 catch_tell(4) 或是
+receive_message(4) 呼叫.
+参考函数:
+catch_tell(4), receive_message(4), message(3)
+手册翻译:
+Phoebus@ZH 97.May.24. (Writen 5/23/97)
+
+reclaim_objects(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+reclaim_objects - 清除残留在记忆体中的物件.
+函数语法:
+int reclaim_objects( void );
+
+整数 reclaim_objects( 无参数 );
+函数用法:
+这个函式重复检查每一个载入的物件, 并尽力把残留在记忆体
+中的物件清除掉. 这样可以清出一些记忆体, 清理的数量多寡
+要看 mud 本身的程式是如何写的. 如果一个物件被其他物件
+里面的全域变数 (global variable)指标 (pointer) 指向到
+, 就会残留在记忆体中, 然後再被摧毁掉. 这个超越函式
+(efun) 会传回变数遇到的被摧毁的物件数目.
+参考函数:
+destruct(3)
+手册翻译:
+Phoebus@ZH 97.May.24. (Writen 5/23/97)
+
+refs(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+refs - 传回一个资料结构的参考数字.
+函数语法:
+int refs( mixed data );
+
+整数 refs( 混合 data );
+函数用法:
+refs() 会传回 data 的参考数字. 这个函式可以在传回 data
+以前, 判断是否要复制一份资料结构.
+参考函数:
+children(3), inherit_list(3), deep_inherit_list(3),
+objects(3)
+手册翻译:
+Phoebus@ZH 97.May.24. (Writen 5/23/97)
+
+reload_object(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+reload_object - 把一个物件还原成刚刚载入的状态.
+函数语法:
+void reload_object( object ob );
+
+无传回值 reload_object( 物件 ob );
+函数用法:
+对 ob 呼叫 reload_object() 时, 所有由驱动程式管理的物件
+特性 (心跳 heart_beat, 外部呼叫 call_outs, 光线 light,
+阴影 shadow 等) 和内部变数都会重新初始化 (re-initialized),
+然後呼叫 create(). 这个函式的效果相当於先摧毁再载入物件,
+用不著存取磁碟.
+参考函数:
+export_uid(3), new(3), clone_object(3), destruct(3)
+手册翻译:
+Phoebus@ZH 97.May.26. (Writen 5/23/97)
+
+remove_action(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+remove_action - 从区域函式 (local function) 中解除一个
+命令动词 (command verb)
+函数语法:
+int remove_action( string fun, string cmd );
+
+整数 remove_action( 字串 fun, 字串 cmd );
+函数用法:
+remove_action(3) 从一个物件的区域函式中解除一个命令动词.
+基本上, remove_action() 是相对於 add_action(3) 和
+add_verb(3) 的函式. 当您不需要一个动词时, 就可以用
+remove_action() 解除.
+传回值:
+remove_action() 的传回值:
+
+1 解除动词成功.
+
+0 解除失败.
+参考函数:
+add_action(3), query_verb(3), init(4)
+手册翻译:
+Phoebus@ZH 97.May.27. (Writen 5/23/97)
+
+remove_call_out(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+remove_call_out() - 取消一个延迟中的外部呼叫 (call_out).
+函数语法:
+int remove_call_out( string fun );
+
+整数 remove_call_out( 字串 fun );
+函数用法:
+取消目前这个物件延迟呼叫的外部呼叫函式 fun. 传回值就是
+外部呼叫还剩下多少延迟时间. 如果函式 fun 已经没有延迟
+的外部呼叫, 就传回 -1.
+参考函数:
+call_out(3), call_out_info(3).
+手册翻译:
+Phoebus@ZH 97.May.27. (Writen 5/23/97)
+
+rename(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+rename() - 更改一个档案的名称.
+函数语法:
+int rename( string src, string dst );
+
+整数 rename( 字串 src, 字串 dst );
+函数用法:
+把叫做 src 的档案改名叫做 dst.
+传回值:
+改名成功就传回 0. 失败则传回非零值.
+参考函数:
+rm(3), rmdir(3), cp(3), link(3)
+手册翻译:
+Phoebus@ZH 97.May.27. (Writen 5/23/97)
+
+replace_program(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+replace_program() - 把 this_object() (目前这个物件)
+的程式置换掉.
+函数语法:
+void replace_program( string str );
+
+无传回值 replace_program( 字串 str );
+函数用法:
+replace_program() 会把 this_object() 替换成这个物件
+继承的物件. 字串 str 是要进行置换的档案名称. 物件进
+行置换之後, 目前的物件就相当於继承物件的复制品. 只是
+保留目前物件的档案名称和全域变数 (global variable)
+不变. 在目前的物件程式执行完毕以前, 不会进行置换的动作.
+参考函数:
+clone_object(3), new(3)
+手册翻译:
+Phoebus@ZH 97.May.27. (Writen 5/23/97)
+
+replace_string(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+replace_string() - 替换一个字串中符合条件的字.
+函数语法:
+string replace_string( str, pattern, replace );
+string replace_string( str, pattern, replace, max );
+string replace_string( str, pattern, replace, first, last );
+
+string str, pattern replace;
+int max, first, last;
+
+字串 replace_string( str, pattern, replace );
+字串 replace_string( str, pattern, replace, max );
+字串 replace_string( str, pattern, replace, first, last );
+
+字串 str, pattern replace;
+整数 max, first, last;
+函数用法:
+replace_string() 将 str 中所有符合条件的字 pattern 替换成
+指定的字 replace. 如果 pattern 没有内容 (为零) , 就传回原
+来的 str . 如果传回的字串超过定义的最大字串长度, 则传回一
+个 undefindp() 传回 1, stringp() 传回 0 的值.
+
+replace_string() 可以指定 replace 为空的字串, 以用来除去
+字串中特定的字. 举例来说: replace_string(" 1 2 3 ", " ", "")
+会传回 "123". replace_string() 执行的速度比用 explode() 和
+implode() 快.
+
+第四和第五个参数可有可无 (这是为了相容於以前的版本). 这两个
+附加的参数有以下的功用:
+
+第四个参数 first:
+
+指定同一个字串最多替换几次 (从 1 开始算). 如果这里指定为 0,
+就当作是全部都换. 所以 replace_string("xyxx", "x", "z", 2)
+会传回 "zyzx".
+
+第五个参数 last:
+
+第五个参数限制符合条件的□围:
+first < 1: 从头开始全部替换.
+last == 0 或 last > 最高符合数(max_matches): 全部替换到最後.
+first > last: 完全不改变.
+举例: replace_string("xyxxy", "x", "z", 2, 3) 传回 "xyzzy".
+参考函数:
+sscanf(3), explode(3), strsrch(3)
+作者:
+Zak@TMI-2 撰写限制条件的部份.
+手册翻译:
+Phoebus@ZH 97.Jun.2. (Writen 5/23/97)
+
+reset_eval_cost(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+reset_eval_cost() - 重新设定剩下的执行耗费时间数字.
+函数语法:
+void reset_eval_cost();
+函数用法:
+reset_eval_cost() 把剩下的执行耗费时间数字设定成最高
+执行耗费时间数.
+参考函数:
+catch(3), error(3), throw(3), error_handler(4),
+eval_cost(3), set_eval_limit(3)
+手册翻译:
+Phoebus@ZH 97.Jun.2. (Writen 5/23/97)
+
+resolve(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+resolve() - 转换一个网际网路地址 (internat address) 为
+网域名称 (domain name), 反之亦然..
+函数语法:
+int resolve( string address, string callback_func );
+
+整数 resolve( 字串 address, 字串 callback_func );
+函数用法:
+resolve() 会转换像 "140.128.136.11" 形式的 address 成为
+"bbs.csmc.edu.tw" 这种形式的网域名字. 或是把
+"bbs.csmc.edu.tw" 这种形式的 address 转换成
+"140.128.136.11" 形式的地址. 转换成功後, 会呼叫目前物件
+的 callback_func. callback_func 的格式为:
+
+void callback(string address, string resolved, int key);
+
+无传回值 callback( 字串 address, 字串 resolved, 整数 key );
+
+key 是 resolve() 的传回值. address 是转换後的地址或网域.
+如果转换失败, 则会传回 0.
+参考函数:
+query_host_name(3), socket_address(3), query_ip_name(3),
+query_ip_number(3)
+手册翻译:
+Phoebus@ZH 97.Jun.2. (Writen 5/23/97)
+
+restore_object(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+restore_object() - 从一个档案读回一个物件的变数值.
+函数语法:
+int restore_object( string name, int flag );
+
+整数 restore_object( 字串 name, 整数 flag );
+函数用法:
+从叫作 name 的档案读回目前物件的变数值. 如果 flag 是 1,
+则非静态变数 (non-static) 不会在读回之前被清除为零.
+(普通状况下, 非静态变数都是零).
+
+如果读回的过程出错, 则所有的变数都不会更动, 并传回错误.
+参考函数:
+save_object(3)
+手册翻译:
+Phoebus@ZH 97.Jun.2 (Writen 5/23/97)
+
+restore_variable(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+restore_variable() - 从一个字串读回变数值.
+函数语法:
+mixed restore_variable( string value );
+
+混合 restore_variable( 字串 value );
+函数用法:
+从一个字串读回变数值. 字串的格式与 save_object() 和
+restore_object() 所使用的相同.
+参考函数:
+restore_object(3)
+手册翻译:
+Phoebus@ZH 97.Jun.2. (Writen 5/23/97)
+
+rm(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+rm() - 删除一个档案.
+函数语法:
+int rm( string file );
+
+整数 rm( 字串 file );
+函数用法:
+删除 file 这个档案. 如果失败就传回 0, 成功则传回 1.
+参考函数:
+mkdir(3), rmdir(3), link(3)
+手册翻译:
+Phoebus@ZH 97.Jun.2. (Writen 5/23/97)
+
+rmdir(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+rmdir() - 删除一个目录.
+函数语法:
+int rmdir( string dir );
+
+整数 rmdir( 字串 dir );
+函数用法:
+删除 dir 这个目录.
+传回值:
+成功就传回非零值 (nonzero), 失败则传回 0.
+参考函数:
+rm(3), mkdir(3), link(3)
+手册翻译:
+Phoebus@ZH 97.Jun.2. (Writen 5/23/97)
+
+random(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+random() - 传回一个「假性」乱数 (pseudo-random number).
+函数语法:
+int random( int n );
+
+整数 random( 整数 n );
+函数用法:
+传回一个□围从 0 到 n - 1 的假性乱数.
+手册翻译:
+Phoebus@ZH 97.May.2. (Writen 5/23/97)
+译按:
+真正的乱数必须先给予一个种子数 (seed number),
+再藉由查乱数表取得一组乱数, 而这些乱数值均介於
+0 与 1 之间.
+
+ 

@@ -1,0 +1,137 @@
+MUDOS
+—————————————————————
+综合地介绍MUD运行平台（MUDOS）
+—————————————————————————
+  
+mudos精讲（18） 
+
+users(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+users() - 传回一个包含所有可互动 (interactive) 玩家
+的阵列.
+函数语法:
+object *users( void );
+
+物件 *users( 无参数 );
+函数用法:
+传回一个物件阵列, 此阵列包括所有的可互动玩家.
+参考函数:
+livings(3), children(3), objects(3)
+手册翻译:
+Phoebus@ZH 97.jul.25. (Writen 5/23/97)
+
+unique_array(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+unique_array() - 将一个物件阵列分组.
+函数语法:
+mixed unique_array( object *obarr, string separator,
+void | mixed skip );
+mixed unique_array( mixed *arr, function f,
+void | mixed skip );
+
+混合 unique_array( 物件 *obarr, 字串 separator,
+无参数 或 混合 skip );
+混合 unique_array( 混合 *arr, 函式指标 f,
+无参数 或 混合 skip );
+函数用法:
+unique_array() 将函式 separator 传回同值的物件分为
+同组. obarr 只能是一个物件阵列, 其他资料型态则予以忽
+视. 在 obarr 中的每一个物件各会呼叫函式 separator
+一次. 如果指定参数 skip, 会先过滤掉符合 skip 的物件
+元素.
+而第二种语法的作用略有不同. 阵列中的每一个元素将依次
+作为 f 的参数, 元素仍依照 f 的传回值分类. 但是阵列
+不限定为物件型态.
+传回值:
+传回的值是含有多个阵列的阵列, 格式如下:
+
+({
+({第一组:1, 第一组:2, .... 第一组:N }),
+({第二组:1, 第二组:2, .... 第二组:N }),
+({第三组:1, 第三组:2, .... 第三组:N }),
+....
+({第 N 组:1, 第 N 组:2, .... 第 M 组:N }),
+})
+手册翻译:
+Phoebus@ZH 97.jul.25. (Writen 5/23/97)
+
+unique_mapping(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+unique_mapping() - 以一个函式为准, 从一个阵列另创
+一个映射 (mapping).
+函数语法:
+mapping unique_mapping( mixed *arr, string fun,
+object ob, mixed extra, ... );
+mapping unique_mapping( mixed *arr, function f,
+mixed extra, ... );
+
+映射 unique_mapping( 混合 *arr, 字串 fun,
+物件 ob, 混合 extra, ... );
+映射 unique_mapping( 混合 *arr, 函式指标 f,
+混合 extra, ... );
+函数用法:
+用以下的方式做出另一个映射:
+
+函式传回同值的成员 (member) 分在同一组, 而以传回值
+作为其关键字 (key).
+参考函数:
+filter_array(3), sort_array(3), map(3)
+手册翻译:
+Phoebus@ZH 97.jul.25. (Writen 5/23/97)
+
+uptime(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+uptime() - 传回上一次驱动程式 (driver) 启动至今的
+秒数.
+函数语法:
+int uptime( void );
+
+整数 uptime( 无参数 );
+函数用法:
+uptime() 传回上一次驱动程式重新启动至今有几秒.
+参考函数:
+time(3), ctime(3), localtime(3), time_expression(3)
+手册翻译:
+Phoebus@ZH 97.jul.25. (Writen 5/23/97)
+
+userp(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+userp() - 判断指定的物件是否曾为可互动 (interactive).
+函数语法:
+int userp( object );
+
+整数 userp( 物件 );
+函数用法:
+如果 arg 曾是可互动物件, 则传回 1.
+参考函数:
+interactive(3), users(3), living(3)
+手册翻译:
+Phoebus@ZH 97.jul.25. (Writen 5/23/97)
+
+undefinedp(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+undefinedp() - 判断指定的变数是否尚未定义.
+函数语法:
+int undefinedp( mixed arg );
+
+整数 undefinedp( 混合 arg );
+函数用法:
+如果 arg 已有定义, 则传回 1. arg 在以下的情形视为未定
+义:
+
+(1) 变数设定为 call_other 以不存在的方式呼叫所传回的值.
+(即 arg = call_other( obj, "???"); )
+
+(2) 变数设定为读取一个映射变数中不存在的元素.
+参考函数:
+mapp(3), stringp(3), pointerp(3), objectp(3), intp(3),
+bufferp(3), floatp(3), functionp(3), nullp(3), errorp(3)
+手册翻译:
+Phoebus@ZH 97.jul.25. (Writen 5/23/97)
+ 

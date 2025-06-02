@@ -1,0 +1,353 @@
+MUDOS
+—————————————————————
+综合地介绍MUD运行平台（MUDOS）
+—————————————————————————  
+mudos精讲（11） 
+
+mud_status(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+mud_status() - 报告一些驱动程式 (driver) 及 mud 函式库
+(mudlib) 的统计数字.
+函数语法:
+void mud_status( int extra );
+
+无传回值 mud_status( 整数 extra );
+函数用法:
+这个函式把一些驱动程式及 mud 函式库的统计数字显示在
+呼叫这个函式的人的萤幕上. 如果参数 extra 为非零值,
+则会显示更多的附加资料. 这个函式取代了 vanilla 3.1.2
+版本中的 status 及 status tables 指令.
+参考函数:
+debug_info(3), dumpallobj(3), memory_info(3), uptime(3)
+手册翻译:
+Phoebus@ZH 97.Apr.15. (Writen 5/23/97)
+
+map(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+map() - 经过一个函式修改一个映射变数、阵列或字串.
+函数语法:
+mapping map( mapping | mixed* | string x, string fun,
+object ob, mixed extra, ... );
+mapping map( mapping | mixed* | string x, function f,
+mixed extra, ... );
+
+映射 map( 映射 或 混合* 或 字串 x, 字串 fun,
+物件 ob, 混合 extra, ... );
+
+映射 map( 映射 或 混合* 或 字串 x, 函式指标 f,
+混合 extra, ... );
+函数用法:
+如果第一个参数是一个映射变数, map() 的做法与
+map_mapping() 相似. 如果是一个阵列, map() 的做法就像
+map_array() . 如果是一个字串, 则 map() 会把字串中的
+每一个字元 (character) 以整数的型态传入函式, 而且以
+函式传回的非零整数值替换原来的字元.
+参考函数:
+filter_array(3), sort_array(3), map_array(3),
+map_mapping(3)
+手册翻译:
+Phoebus@ZH 97.Feb.18. (Writen 5/23/97)
+
+map_array(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+map_array() - 经由一个函式修改一个阵列的元素 (element)
+函数语法:
+mixed *map_array( mixed *arr, string fun, object ob,
+mixed extra, ... );
+mixed *map_array( mixed *arr, function f, mixed extra,
+... );
+
+混合 *map_array( 混合 *arr, 字串 fun, 物件 ob,
+混合 extra, ... );
+混合 *map_array( 混合 *arr, 函式指标 f, 混合 extra,
+... );
+函数用法:
+经由 ob->fun() 或 f 处理每一个 arr 中的元素之後,
+传回一个新的阵列. 每一个 arr 中的元素会当成指定函式
+的参数并呼叫一次指定的函式. 参数 extra 会在每次呼叫
+函式时当成第二个以後的参数. 原则上函式的运作如下:
+
+foreach (index) arr[index] = ob->fun(arr[index],extra);
+
+ob->fun( arr[.index.], extra ) 传回的值会替换掉阵列中
+的元素. 如果 arr 不是一个阵列, 则 map_array() 传回 0.
+参考函数:
+filter_array(3), sort_array(3), map(3)
+手册翻译:
+Phoebus@ZH 97.Feb.18. (Writen 5/23/97)
+
+map_delete(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+map_delete() - 以关键字从一个映射变数中删除一对
+(关键字, 内容值) ((key, value)).
+函数语法:
+void map_delete( mapping m, mixed element );
+
+无传回值 map_delete( 映射 m, 混合 element );
+函数用法:
+map_delete 删除映射变数中关键字符合 element 的
+(关键字, 内容值) .
+
+□例:
+
+mapping names;
+
+names = ([]);
+names["truilkan"] = "john";
+names["wayfarer"] = "erik";
+names["jacques"] = "dwayne";
+
+则:
+
+map_delete(names,"truilkan");
+
+会使映射变数 names 成为:
+
+(["wayfarer" : "erik", "jacques" : "dwayne"])
+
+在 map_delete( names, "truilkan" ) 之後, key(names)
+就不会包含 truilkan (除非後来又用 ("truilkan", *)
+把 truilkan 加回映射变数里)
+参考函数:
+allocate_mapping(3)
+手册翻译:
+Phoebus@ZH 97.Feb.18. (Writen 5/23/97)
+
+map_mapping(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+map_mapping() - 经由一个函式修改一个映射变数中
+的元素
+函数语法:
+mapping map_mapping( mapping map, string fun,
+object ob, mixed extra, ... );
+mapping map_mapping( mapping map, function f,
+mixed extra, ... );
+
+映射 map_mapping( 映射 map, 字串 fun,
+物件 ob, 混合 extra, ... );
+映射 map_mapping( 映射 map, 函式指标 f,
+混合 extra, ... );
+函数用法:
+经由 ob->fun() 或 f 处理一个映射变数, 并传回一个
+有相同关键字的新映射变数. 每一个在 map 中的元素都
+会呼叫函式一次, 并将函式的传回值放在该项关键字之後.
+参考函数:
+filter_array(3), sort_array(3), map(3)
+手册翻译:
+Phoebus@ZH 97.Feb.18. (Writen 5/23/97)
+
+mapp(3) LP MudOSv21c7 ( 5 Sep 1994 )
+
+名称 :
+mapp() - 判断一个指定的变数是否为映射变数 (mapping).
+语法 :
+int mapp( mixed arg );
+
+整数 mapp( 混合 arg );
+用法 :
+如果 arg 是个映射变数, 则传回 1.
+参考 :
+stringp(3), pointerp(3), objectp(3), intp(3),
+bufferp(3), floatp(3) functionp(3), nullp(3),
+undefinedp(3), errorp(3)
+翻译 :
+Phoebus@ZH 97.Mar.14. (Writen 5/23/97)
+
+master(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+master() - 传回主宰物件 (master object)
+函数语法:
+object master( void );
+
+物件 master( 无参数 );
+函数用法:
+传回指向主宰物件 (master object) 的指标 (pointer).
+参考函数:
+find_object(3)
+手册翻译:
+Phoebus@ZH 97.Apr.13. (Writen 5/23/97)
+
+match_path(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+match_path() - 在一个映射变数 (mapping) 中找寻
+路径名称 (path)
+函数语法:
+mixed match_path( mapping m, string str );
+
+混合 match_path( 映射 m, 字串 str );
+函数用法:
+match_path() 在一个映射变数中找路径名. match_path()
+会假设所有的关键字 (key) 为字串 (string) 型态. 而内容值
+(value) 是啥则无关紧要. 这个超越函式 (efun) 会找出符合条
+件的最长字串. 以 / 结尾的关键字会找出此关键字底下所有的
+路径名称, 意即 / 算是一个万用字元 (wildcard), 视为此路径
+底下的任何东西 (译按: 相当於档案或路径名称用的 * 号).
+作者:
+Cygnus
+手册翻译:
+Phoebus@ZH 97.Apr.13. (Writen 5/23/97)
+
+max_eval_cost(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+max_eval_cost() - 传回最高的执行耗费时间 (evaluation cost)
+函数语法:
+void max_eval_cost()
+
+无传回值 max_eval_cost()
+函数用法:
+max_eval_cost() 在驱动程式 (driver) 判断此时是否陷入
+一个无穷回圈之前, 传回是否可以执行的指示数字.
+参考函数:
+catch(3), error(3), throw(3), error_handler(4),
+set_eval_limit(3), reset_eval_cost(3)
+手册翻译:
+Phoebus@ZH 97.Apr.15. (Writen 5/23/97)
+
+member_array(3) LP MudOSv21c7 (5 Sep a994)
+
+函数名称:
+member_array() - 在一个阵列 (array) 或字串 (string) 中
+找寻指定的项目 (item) , 并传回此项目为
+第几项的索引.
+函数语法:
+int member_array( mixed item, mixed * | string arr, void |
+int start );
+
+整数 member_array( 混合 item, 混合 * 或 字串 arr, 无参数 或
+整数 start );
+
+函数用法:
+传回 item 在阵列 arr 中第一次出现时, 出现在第几项. 如果
+使用 start 参数, 则从 start 指定的第几项之後找起. 如果找
+不到 item, 则传回 -1.
+手册翻译:
+Phoebus@ZH 97.Apr.15. (Writen 5/23/97)
+
+memory_info(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+memory_info - 取得一个物件或整个 mud 的记忆体使用量.
+函数语法:
+varargs int memory_info( object ob );
+
+不定参数 整数 memory_info( 物件 ob );
+函数用法:
+如果指定 ob, 则 memory_info() 传回 ob 正在使用的记忆
+体量. 如果没有指定参数, 则传回整个 mud 的记忆体使用量.
+请注意, 整个 mud 的记忆体使用量不是实际上系统配置给
+mud 的记忆体量.
+参考函数:
+debug_info(3), malloc_status(3), mud_status(3)
+手册翻译:
+Phoebus@ZH 97.Apr.15. (Writen 5/23/97)
+
+message(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+message() - 送讯息给活著的 (living) 物件.
+函数语法:
+void message( mixed class, string message, mixed target,
+mixed exclude );
+
+无传回值 message( 混合 class, 字串 message, 混合 target,
+混合 exclude );
+函数用法:
+message() 呼叫目标名单中所有物件 (除了 exclude 名单以外)
+的 receive_message( 混合 class, 字串 message ) 函式.
+这样基本上只是告诉此物件一个讯息.
+
+class 是此段讯息的种类, 用於处理讯息的介面之类的地方.
+例如 combat, shout, emergency 等等.
+
+message 是欲送出的讯息字串.
+
+target 是欲送达讯息的物件名单, 可以是一个物件或物件指标
+(pointer). 如果目标是一个非活著的 (non-living) 的物件,
+在此物件内的所有物件都会收到讯息.
+
+exclude 是不应收到此讯息的物件名单, 可以是一个物件或物件
+阵列 (array).
+参考函数:
+say(3), write(3), shout(3), tell_object(3), tell_room(3)
+手册翻译:
+Phoebus@ZH 97.Apr.15. (Writen 5/23/97)
+
+mkdir(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+mkdir() - 创造一个目录.
+函数语法:
+int mkdir( string directory );
+
+整数 mkdir( 字串 directory );
+函数用法:
+创造指定的目录. 成功传回 1, 失败则传回 0.
+参考函数:
+rm(3), rmdir(3), link(3)
+手册翻译:
+Phoebus@ZH 97.Apr.15. (Writen 5/23/97)
+
+moncontrol(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+moncontrol() - 开启或关闭侧写 (profiling).
+函数语法:
+void moncontrol( int on );
+
+无传回值 moncontrol( 整数 on );
+函数用法:
+如果参数 on 为 1, moncontrol() 就开启侧写. 如果 on 指定
+为 0 , moncontrol() 会关闭侧写. 执行驱动程式 (driver)
+时可以随时开关侧写, 典型的用法是只想侧写某些部份执行的情形.
+如果驱动程式编译 (compile) 时, 没有开启侧写功能,
+moncontrol() 就没有效果.
+参考函数:
+opcprof(3), function_profile(3)
+手册翻译:
+Phoebus@ZH 97.Apr.15. (Writen 5/23/97)
+
+move_object(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+move_object() - 把目前的物件搬到其他的环境 (environment) 中.
+函数语法:
+void move_object( object item, mixed dest );
+
+无传回值 move_object( 物件 item, 混合 dest );
+函数用法:
+把物件 item 搬到物件 dest 里面. item 必须是 this_object().
+如果 item 是 this_object(), move_object() 可以只指定 dest
+一个参数.
+参考函数:
+this_object(3), move(4)
+手册翻译:
+Phoebus@ZH 97.Apr.15. (Writen 5/23/97)
+
+malloc_status(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+malloc_status() - 报告一些记忆体使用情形的统计资料
+函数语法:
+void malloc_status( void );
+
+无传回值 malloc_status( 无参数 );
+函数用法:
+这个函式把记忆体使用情形的统计资料显示在呼叫此函式
+的人的萤幕上. 这个函式已经取代了 vanilla 3.1.2 的
+malloc 命令. 请注意, malloc_status() 输出的结果,
+依编译驱动程式时, options.h 中定义的记忆体管理方式
+不同而有所差异.
+参考函数:
+mud_status(3), dumpallobj(3), memory_info(3)
+手册翻译:
+Phoebus@ZH 97.Feb.18. (Writen 5/23/97)
+
+ 

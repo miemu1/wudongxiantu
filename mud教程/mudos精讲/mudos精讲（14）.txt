@@ -1,0 +1,252 @@
+MUDOS
+—————————————————————
+综合地介绍MUD运行平台（MUDOS）
+—————————————————————————
+  
+mudos精讲（14） 
+
+process_value(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+process_value() - 以指定的函式呼叫取得函式的传回值.
+函数语法:
+mixed process_value( string calldescription );
+
+混合 process_value( 字串 calldescription );
+函数用法:
+以指定的格式取得函式的传回值, 格式如下:
+
+"函式名称[:档案名称][ | 参数 1 | 参数 2.... | 参数 N]"
+
+传回值可能是任何型态的值.
+
+请注意, 物件的档案名称、参数都以表示可有可无的 [] 中括号
+框起来. 请勿把这些括号也写进字串里.
+参考函数:
+process_string(3)
+警告:
+在 mud 函式库 (mudlib) 中, 常常使用函式呼叫的传回值.
+最好能在使用 process_string() 之前, 设定物件的有效使
+用者辨识名称 (effuserid, euid) 为 0 .
+手册翻译:
+Phoebus@ZH 97.Apr.25. (Writen 5/23/97)
+
+pow(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+pow() - 计算一个浮点数 (float) 的乘幂.
+函数语法:
+float pow( float x, float y );
+
+浮点数 pow( 浮点数 x, 浮点数 y );
+函数用法:
+pow() 传回 x 的 y 次方值. 如果 x 是 0.0, y 必须为正数.
+如果 x 为负数, y 必须为一个整数.
+参考函数:
+exp(3), log(3), sqrt(3)
+手册翻译:
+Phoebus@ZH 97.Apr.24. (Writen 5/23/97)
+
+present(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+present() - 以物品的辨识名称 (id) 寻找物件.
+函数语法:
+object present( mixed str, object ob );
+
+物件 present( 混合 str, 物件 ob );
+函数用法:
+如果一个物件的名字为 str, 就传回此物件.
+
+str 也可以是一个物件, 这样会比较快而简单.
+
+如果指定 ob, present() 会寻找 ob 的内容物 (inventory),
+不然会寻找目前物件的内容物, 以及目前物件所处环境的内容物.
+参考函数:
+move_object(3), environment(3)
+手册翻译:
+Phoebus@ZH 97.Apr.24. (Writen 5/23/97)
+
+previous_object(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+previous_object() - 传回呼叫目前这个函式的物件
+(或物件列表).
+函数语法:
+mixed previous_object( int | void );
+
+混合 previous_object( 整数 或 无参数 );
+函数用法:
+传回一个呼叫目前函式之物件的物件指标. 请注意, 区域函式
+(local function) 的呼叫不会让 previous_object() 设定
+为目前的物件, 不会改变 previous_object() 传回的物件.
+如果指定一个正整数为参数, 就传回先前第几个呼叫的物件.
+previous_object(0) 如同 previous_object(),
+previous_object(1) 是 previous object 的
+previous_object(), 以此类推. previous_object(-1) 则传
+回所有的 previous object 阵列.
+参考函数:
+call_other(3), call_out(3), origin(3)
+手册翻译:
+Phoebus@ZH 97.Apr.24. (Writen 5/23/97)
+
+printf(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+printf, sprintf - 转换成指定格式的输出结果.
+函数语法:
+void printf( string format, ... );
+string sprintf( string format, ... );
+
+无传回值 printf( 字串 format, ... );
+字串 sprintf( 字串 format, ... );
+函数用法:
+以下为 LPC (s)printf() 的格式用法, Lynscar
+(Sean A Reith) 加入了一些扩充用法.
+
+目前的版本支援以下的修改格式 (modifier):
+
+" " 在正整数之前放入一个空格.
+
+"+" 在正整数之前放入一个 + 号.
+
+"-" 对齐栏位 (field) 的左边.
+请注意: 标准的 (s)printf() 预设是对齐右边,
+但是对主要以字串为基础的语言来说,
+这样非常奇怪.
+在此为了保留与 C 的相容性而保留此一
+特性.
+
+"|" 对齐栏位的中心.
+
+"=" 如果字串长度比栏位大小还长, 使用纵列模式
+(column mode). 在此只对字串有效, 其他的
+型态一律无效. 纵列模式中, 字串中的字会自
+动换行 (wrap).
+
+"#" 表格模式. 在栏位之内, 字串中的每一个字会
+换一行 (即每个字後面加上 \n). 只对字串有
+效.
+
+n 以整数指定栏位大小. 用 * 代替整数则使用
+参数指定栏位大小. 如果 n 是 0 , 则此栏
+除了资料以外就以空值 (zeros) 填满. 如果
+n 不是 0 , 此栏除了资料以外将放入空白字
+元 (space) 或是另外指定的字元.
+
+"."n 指定输出的精确度为 n. 普通的字串在此之後
+则被截断 (如果精确度 n 大於栏位长度, 则
+栏位长度变为精确度 n ). 表格则使用精确度
+指定纵列的总数 (如果不指定精确度, 则表格
+会自动计算最适合的输出结果). 精确度对於
+其他的资料型态无效
+
+":"n n 指定 fs 和精确度, 如果 n 是 0, 则原来
+用以填满栏位的空格就代以空值 (zeros)
+
+"@" 参数为一个阵列. 其他除了 @ 以外, 对应的
+格式资料亦将用於阵列中的每一个元素.
+
+"'X'" 单引号 (') 中的字元用以填满整个栏位中,
+资料以外的空间. (预设值是空白字元) (
+如果同时在栏位大小之前指定一个空值, 又指
+定 'X' 字串填满栏位, 则以後者为准)
+注意: 如果欲填满的字串中要使用单引号 (')
+或是双引号 ("), 您必须使用 \' 或 \" 以避
+开编译器的检查.
+
+以下是指定型态的格式:
+
+% 此处不指定任何参数, 而以 % 输出. 忽略所
+有的修改格式 (modifier).
+
+O 参数为 LPC 资料型态.
+
+s 参数为字串.
+
+d, i 参数为整数, 并以十进位印出.
+
+c 参数为整数, 并以字元印出.
+
+o 参数为整数, 并以八进位印出.
+
+x 参数为整数, 并以十六进位印出.
+
+X 参数为整数, 并以十六进位印出 (A 到 F 以大
+写印出).
+
+f 浮点数.
+
+传回值:
+sprintf() 传回指定格式的字串.
+作者:
+Sean A. Reith (Lynscar)
+参考函数:
+sscanf(3)
+手册翻译:
+Phoebus@ZH 97.Jul.23. (Writen 5/23/97)
+
+process_string(3) MudOS v21c2 (7 Jul 1996)
+
+函数名称:
+process_string() - 在字串中以呼叫函式的结果替代某些字.
+函数语法:
+string process_string( string combinestring );
+
+字串 process_string( 字串 combinestring );
+函数用法:
+以指定的格式替代一个字串中的某些字. 这个格式相当於呼叫
+函式所传回的字串.
+
+格式如下:
+
+"@@函式名称[:档案名称][ | 参数 1 | 参数 2....| 参数 N ]@@"
+
+上面这行可以当作是下面这行的函式呼叫:
+
+档案名称->函式名称( 参数 1, 参数 2, ....., 参数 N );
+
+请注意, process_string() 不会接受函式递回 (recuse) 呼叫
+传回第二次以後的字串. 如果函式传回第二次字串,
+process_string() 不会换掉第一次传回的字串.
+
+在 combinestring 中呼叫用来处理字串的函式, 如果传回值不
+是字串, 则关於呼叫格式的那些字都会维持不变地放在字串里.
+
+请注意, 物件的档案名称、参数都以表示可有可无的 [] 中括号
+框起来. 请勿把这些括号也写进字串里.
+参考函数:
+process_value(3)
+警告:
+在 mud 函式库 (mudlib) 中, 常常使用函式呼叫的传回值.
+最好能在使用 process_string() 之前, 设定物件的有效使
+用者辨识名称 (effuserid, euid) 为 0 .
+□例:
+"@@query_the_name:/obj/monster#123@@正在你身後穷追不舍."
+
+会以下面的形式替换掉一些字:
+
+"安老大正在你身後穷追不舍."
+
+(假设 monster#123 的 query_the_name 函式传回 "安老大")
+手册翻译:
+Phoebus@ZH 97.Apr.25. (Writen 5/23/97)
+
+pointerp(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+pointerp() - 判断指定的变数是否为一个阵列 (array).
+函数语法:
+int pointerp( mixed arg );
+
+整数 pointerp( 混合 arg );
+函数用法:
+如果 arg 是一个阵列, 则传回 1.
+参考函数:
+mapp(3), stringp(3), objectp(3), intp(3), bufferp(3),
+floatp(3), functionp(3), nullp(3), undefinedp(3),
+errorp(3), arrayp(3)
+手册翻译:
+Phoebus@ZH 97.Apr.24. (Writen 5/23/97)
+
+ 

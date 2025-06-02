@@ -1,0 +1,321 @@
+MUDOS
+—————————————————————
+综合地介绍MUD运行平台（MUDOS）
+—————————————————————————
+  
+mudos精讲（17） 
+
+typeof(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+typeof() - 传回一个式子 (expression) 的资料型态 (type).
+函数语法:
+int typeof( mixed var );
+
+整数 typeof( 混合 var );
+函数用法:
+传回一个式子的资料型态. 中定义传回值为:
+
+整数 INT 2
+字串 STRING 4
+阵列 ARRAY 8
+物件 OBJECT 16
+映射 MAPPING 32
+函式指标 FUNCTION 64
+浮点数 FLOAT 128
+暂存区 BUFFER 256
+
+参考函数:
+allocate(3), allocate_mapping(3), strlen(3)
+手册翻译:
+Phoebus@ZH 97.Jul.25. (Writen 5/23/97)
+
+tan(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+tan() - 传回一个浮点数的正切值 (tangent)
+函数语法:
+float tan( float f );
+
+浮点数 tan( 浮点数 f );
+函数用法:
+传回参数 f 的正切值, f 的单位是弪度值 (radians).
+参考函数:
+acos(3), asin(3), atan(3), cos(3), sin(3)
+手册翻译:
+Phoebus@ZH 97.Jul.24. (Writen 5/23/97)
+
+tell_object(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+tell_object() - 将讯息送给一个物件.
+函数语法:
+void tell_object( object ob, string str );
+
+无传回值 tell_object( 物件 ob, 字串 str );
+函数用法:
+将讯息 str 送给物件 ob. 如果 ob 是一个可互动的
+(interactive) 物件 (玩家), 此段讯息就对 ob 显示.
+反之, 则会送给 ob 的函式 catch_tell().
+参考函数:
+message(3), write(3), shout(3), say(3), tell_room(3)
+手册翻译:
+Phoebus@ZH 97.jul.24. (Writen 5/23/97)
+
+tell_room(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+tell_room - 对一个房间中的所有物件送出讯息.
+函数语法:
+void tell_room( mixed ob, string str, object *exclude );
+
+无传回值 tell_room( 混合 ob, 字串 str, 物件 *exclude );
+函数用法:
+把讯息 str 送给房间 ob 中的所有物件. ob 可以是此房间的
+档案名称. 如果指定第三个参数 exclude, 在 exclude 这个阵
+列里的物件都收不到此段讯息.
+参考函数:
+message(3), write(3), shout(3), say(3), tell_object(3)
+手册翻译:
+Phoebus@ZH 97.Jul.24. (Writen 5/23/97)
+
+test_bit(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+test_bit() - 检查一个位元字串 (bitstring) 中某一个位元
+(bit) 的值.
+函数语法:
+int test_bit( string str, int n );
+
+整数 test_bit( 字串 str, 整数 n );
+函数用法:
+传回字串 str 中, 第 n 个位元是 0 或 1.
+参数:
+set_bit(3), clear_bit(3)
+手册翻译:
+Phoebus@ZH 97.Jul.24. (Writen 5/23/97)
+
+this_interactive(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+this_interactive - 传回呼叫此函式的玩家物件.
+函数语法:
+object this_interactive();
+
+物件 this_interactive();
+函数用法:
+传回呼叫此函式的玩家物件. 基本上 this_interactive()
+会传回 this_player(), 而不像 this_player() 会受到
+enable_commands() 或 command() 的影响.
+参考函数:
+this_object(3), this_player()
+手册翻译:
+Phoebus@ZH 97.Jul.24. (Writen 5/23/97)
+
+this_object(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+this_object() - 传回呼叫此函式物件的物件指标
+(object pointer).
+函数语法:
+object this_object( void );
+
+物件 this_object( 无参数 );
+函数用法:
+传回这个物件的物件指标. 如果想呼叫同一个物件却非同一个
+程式码档案的函式时 (即呼叫所继承 (inherite) 物件的函式)
+, 可用 this_object() 达到目的.
+参考函数:
+this_player(3), previous_object(3), origin(3)
+手册翻译:
+Phoebus@ZH 97.Jul.25. (Writen 5/23/97)
+
+this_player(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数语法:
+object this_player( int flag );
+
+物件 this_player( 整数 flag );
+函数用法:
+传回呼叫此函式的玩家 (player) 物件. 请注意, 即使是从
+玩家物件内部使用 this_player(), 其传回值也可能与
+this_object() 不同. 如果以 this_player(1) 呼叫, 则传
+回呼叫此函式的可互动 (interactive) 物件.
+this_player(1) 的传回值在某些情形下与 this_player()
+不同. 例如: 系统管理者 (admin) 使用 command() 强制
+一名玩家做出一些动作时.
+参考函数:
+this_object(3)
+手册翻译:
+Phoebus@ZH 97.Jul.25. (Writen 5/23/97)
+
+throw(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+throw() - 强制一个物件产生错误.
+函数语法:
+void throw(mixed);
+
+无传回值 throw( 混合 );
+函数用法:
+throw() 可以用於强制一个物件产生错误. 当 throw() 和
+catch() 两者一起使用时, 让程式设计者可以设计发生编译
+时段错误时 (runtime error) 显示何种错误讯息. 当使用
+throw() 时, 应一起使用 catch() 函式.
+以下为典型的函数用法:
+
+string err;
+int rc;
+
+err = catch(rc = ob->move(dest));
+if (err) {
+throw("move.c: ob->move(dest): " + err + "\n");
+return;
+}
+参考函数:
+catch(3), error(3), error_handler(4)
+手册翻译:
+Phoebus@ZH 97.Jul.25. (Writen 5/23/97)
+
+time(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+time() - 传回现在时刻距离 1970 年一月一日有多少秒.
+函数语法:
+int time( void );
+
+整数 time ( 无参数 );
+函数用法:
+传回从 1970 年一月一日午夜 (格林威治时间) 开始到现在,
+总共过了多少秒.
+参考函数:
+ctime(3), localtime(3), time_expression(3), uptime(3)
+手册翻译:
+Phoebus@ZH 97.Jul.25. (Writen 5/23/97)
+
+time_expression(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+time_expression() - 传回计算一个式子 (expression) 所需
+的真实时间.
+函数语法:
+int time_expression( mixed expr );
+
+整数 time_expression( 混合 expr );
+函数用法:
+计算 expr, 并以微秒 (microsecond) 为单位传回计算 expr
+所需的时间. 传回数值的精确度并不需要精确到一微秒, 实际
+上, 此数值的精确度比微秒还差.
+参考函数:
+rusage(3), function_profile(3), time(3)
+手册翻译:
+Phoebus@ZH 97.Jul.25. (Writen 5/23/97)
+
+to_float(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+to_float - 将一个整数转换成一个浮点数.
+函数语法:
+float to_float( int i );
+
+浮点数 to_float( 整数 i );
+函数用法:
+to_float() 传回一个浮点数型态的数值, 此数值等於整数 i.
+参考函数:
+to_int(3), read_buffer(3), sprintf(3), sscanf(3)
+手册翻译:
+Phoebus@ZH 97.Jul.25. (Writen 5/23/97)
+
+to_int(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+to_int - 将一个浮点数或暂存区 (buffer) 转换为一个整数.
+函数语法:
+int to_int( float | buffer x );
+
+整数 to_int( 浮点数 或 暂存区 x );
+函数用法:
+如果 x 是一个浮点数, 则 to_int() 传回 x 小数点之前
+的整数值. 如果 x 是一个暂存区, 则 to_int() 传回暂存
+区之中的整数 ( 以 network-byte-order 的形式 ).
+参考函数:
+to_float(3), read_buffer(3), sprintf(3), sscanf(3)
+手册翻译:
+Phoebus@ZH 97.Jul.25. (Writen 5/23/97)
+
+trace(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+trace() - 设定追踪旗标 (trace flags) 并传回旧的旗标值.
+函数语法:
+int trace( int traceflags );
+
+整数 trace( 整数 traceflags );
+函数用法:
+设定追踪旗标, 并传回旧的追踪旗标. 处於追踪状态时, 会印
+出很多资讯.
+
+以下是追踪资讯 (trace bits):
+
+Trace all function calls to lfuns.
+(追踪所有对区域函式的函式呼叫)
+
+Trace all calls to "call_other".
+(追踪所有对 call_other 的呼叫)
+
+Trace all function returns.
+(追踪所有函式的回传值)
+
+Print arguments at function calls and return values.
+(印出呼叫函式的参数, 及函式的回传值)
+
+Print all executed stack machine instructions
+(produces a lot of output!)
+(印出所有执行的堆叠机器码 (这样子输出的资料可真多!) )
+
+Enable trace in heart beat functions.
+(开始追踪心跳函式)
+
+Trace calls to apply.
+(追踪申请的呼叫)
+
+Show object name in tracing.
+(显示追踪时的物件名称)
+
+参考函数:
+traceprefix(3)
+手册翻译:
+Phoebus@ZH 97.Jul.25. (Writen 5/23/97)
+
+traceprefix(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+traceprefix() - 决定该追踪哪一个物件.
+函数语法:
+string traceprefix( string prefix );
+
+字串 traceprefix( 字串 prefix );
+函数用法:
+如果设定追踪前置 (traceprefix) (不能为 0), 只有在遇到
+追踪前置所指名的物件才进行追踪.
+参考函数:
+trace(3)
+手册翻译:
+Phoebus@ZH 97.Jul.25. (Writen 5/23/97)
+
+tail(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+tail() - 显示一个档案的最後一部份.
+函数语法:
+int tail( string path );
+
+整数 tail( 字串 path );
+函数用法:
+此超越函式 (efun) 显示档案 path 的最後一部份. 成功则
+传回 1, 不成功传回 0. (例如档案读取权限不够)
+参考函数:
+read_file(3), read_buffer(3), file_size(3)
+手册翻译:
+Phoebus@ZH 97.Jul.24. (Writen 5/23/97)
+ 

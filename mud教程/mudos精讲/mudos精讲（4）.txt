@@ -1,0 +1,254 @@
+MUDOS
+—————————————————————
+综合地介绍MUD运行平台（MUDOS）
+—————————————————————————
+ 
+mudos精讲（4） 
+
+debug_info(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+debug_info() - 显示除错 (debug) 资讯
+函数语法:
+mixed debug_info( int operation, ... );
+mixed debug_info( 0, object ob );
+mixed debug_info( 1, object ob );
+
+混合 debug_info( 整数 operation, ... );
+混合 debug_info( 0, 物件 ob );
+混合 debug_info( 1, 物件 ob );
+函数用法:
+debug_info() 是一个普通用途的措施, 用来为 MudOS
+驱动程式除错. 而所需要的除错资讯则由第一个参数决定.
+其馀的参数则由第一个参数的动作 (operation) 决定.
+
+存在的动作 (0 与 1) 需要第二个物件参数, 而可能用来显示
+MudOS 物件结构的不同□围 ( various fields of the MudOS
+object structure).
+
+以下的 LPC 码用来产生一个简单的输出结果:
+
+程式一:
+/* di0.c */
+create() {
+debug_info(0, this_object());
+}
+
+结果一:
+O_HEART_BEAT : FALSE
+O_IS_WIZARD : FALSE
+O_ENABLE_COMMANDS : FALSE
+O_CLONE : FALSE
+O_DESTRUCTED : FALSE
+O_SWAPPED : FALSE
+O_ONCE_INTERACTIVE: FALSE
+O_RESET_STATE : FALSE
+O_WILL_CLEAN_UP : FALSE
+O_WILL_RESET: TRUE
+total light : 0
+next_reset : 720300560
+time_of_ref : 720299416
+ref : 2
+swap_num : -1
+name : 'u/c/cynosure/di0'
+next_all : OBJ(bin/dev/_update)
+This object is the head of the object list.
+
+程式二:
+/* di1.c */
+create() {
+debug_info(1, this_object());
+}
+
+结果二:
+program ref's 1
+Name u/c/cynosure/di1.c
+program size 10
+num func's 1 (16)
+num strings 0
+num vars 0 (0)
+num inherits 0 (0)
+total size 104
+
+参考函数:
+dump_file_descriptors(3), dump_socket_status(3)
+手册翻译:
+Phoebus@ZH 97.Jan.27. (Writen 5/23/97)
+
+debugmalloc(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+debugmalloc() - 将已配置的记忆体 (malloc'd memory)
+资讯倾印到一个档案里.
+函数语法:
+void debugmalloc( string filename, int mask );
+
+无传回值 debugmalloc( 字串 filename, 整数 mask );
+函数用法:
+这个超越函式 (efun) 必须在编译驱动程式 (driver) 时
+, 於 options.h 同时定义 DEBUGMALLOC 和
+DEBUGMALLOC_EXTENSIONS 两者才有效. debugmalloc()
+会倾印 DMALLOC() 配置的记忆体区块的资讯及相关的
+macros. (如果 macro 有 mask bitwise and'd (&) with
+the tag, 即 mask & tag 不是零) 详细情形请参阅驱动
+程式原始码中的 md.c 及 config.h
+参考函数:
+set_malloc_mask(3)
+手册翻译:
+Phoebus@ZH 97.Jul.23. (Writen 5/23/97)
+
+deep_inherit_list(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+deep_inherit_list() - 取得一个物件所继承的父物件.
+(parent object)
+函数语法:
+string *deep_inherit_list( object obj );
+
+字串 *deep_inherit_list( 物件 obj );
+函数用法:
+传回一个物件所继承之所有父物件的档案名称, 包括直接继承
+与间接继承的父物件.
+参考函数:
+inherit_list(3), inherits(3)
+手册翻译:
+Phoebus@ZH 97.Feb.04. (Writen 5/23/97)
+
+deep_inventory(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+deep_inventory() - 传回一个物件的内容物品, 如果物品中
+会以还含有物品, 将会以巢状的方式继续找下去.
+函数语法:
+object *deep_inventory( object ob );
+
+物件 *deep_inventory( 物件 ob );
+函数用法:
+传回 ob 含有之所有物品的阵列 (array), 深层的物品也
+会继续寻找下去.
+参考函数:
+first_inventory(3), next_inventory(3), all_inventory(3)
+手册翻译:
+Phoebus@ZH 97.Feb.04. (Writen 5/23/97)
+
+destruct(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+destruct() - 从游戏中销毁一个物件.
+函数语法:
+void destruct( object ob );
+
+无传回值 destruct( 物件 ob );
+函数用法:
+完全摧毁物件 ob. 在呼叫 destruct() 之後, 会清除所有
+的全域变数 (global variables), 只剩下区域变数和参数.
+如果 ob 是 this_object() , 此函式仍会执行, 但是最好
+立刻传回一个数值.
+参考函数:
+clone_object(3), new(3), destruct_env_of(4), move(4)
+手册翻译:
+Phoebus@ZH 97.Feb.04. (Writen 5/23/97)
+
+disable_commands(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+disable_commands() - 设定一个活著的 (living) 物件为
+「非活著」(non-living)
+函数语法:
+int disable_commands( void );
+
+整数 disable_commands( 无参数 );
+函数用法:
+让一个活著的物件变成「非活著」(non-living). 所谓
+「非活著」, 就是让物件变成以下的状态:
+
+add_actions 失效.
+livingp 函式传回「伪」值 (false, 0).
+如果此物件是「可互动的」 (interactive), 就让这个使用者
+无法输入命令 (input_to 函式例外).
+
+disable_commands 永远传回 0 值.
+参考函数:
+enable_commands(3)
+手册翻译:
+Phoebus@ZH 97.Feb.04. (Writen 5/23/97)
+
+disable_wizard(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+disable_wizard() - 取消一个物件的巫师特权.
+函数语法:
+void disable_wizard( void );
+
+无传回值 disable_wizard( 无参数 );
+函数用法:
+这个函式与 enable_wizard() 函式的功用相反. 把目前
+物件的巫师特权取消掉.
+参考函数:
+enable_wizard(3), wizardp(3)
+
+手册翻译:
+Phoebus@ZH 97.Feb.04. (Writen 5/23/97)
+
+domain_stats(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+domain_stats() - 传回区域的一些统计资料.
+author_stats() - 传回作者的一些统计资料.
+函数语法:
+mapping domain_stats( string domain | void );
+mapping author_stats( string domain | void );
+
+映射 domain_stats( 字串 domain 或 void );
+映射 author_stats( 字串 domain 或 void );
+函数用法:
+author_stats() 和 domain_stats() 都会传回一个储存在
+映射变数的资料. 如果没有加上参数 (argument) , 就会传
+回所有作者 (或所有区域) 每个人 (或每个区域) 的映射资
+料. 每份映射资料包含有: 移动数 (moves), 耗费时间数
+(cost), 错误数 (errors), 心跳数 (heart_beats), 价值
+数 (worth), 阵列数 (array_size), 和 物件数 (objects)
+. 每一项都是包含在传回的映射变数中的整数值. 移动数是
+在指定作者 (或区域) 中, 物件被移动到另一物件中的多寡
+. 耗费数是所有在指定作者 (或区域) 里的物件所耗费的计
+算数目 (eval_cost). 错误数是在指定作者 (或区域) 中物
+件总共发生的系统错误多寡. 心跳数是在指定作者 (或区域
+) 中, 所有物件呼叫 heartbeat 的次数. 价值数则是使用
+add_worth(3) 函数的情形 (这项数值常常用来追踪指定巫
+师作者所流出和流入的金钱数目) . 阵列数是指定区域中阵
+列所配置的记忆体位元数. 物件数是指定区域中被创造出来
+的物件总数. 当这两个函数被呼叫时, 如果没有指定参数,
+传回的映射就会像这样:
+
+([ domain0 : info0, domain1 : info1, ... ])
+
+而 info0 的内容格式是:
+
+([ "moves" : moves, "cost" : cost, "errors" : errors,
+"heart_beats" : heart_beats, "worth" : worth,
+"array_size" : array_size, "objects" : objects ])
+
+有指定参数时, 就会传回像 info0 的格式.
+参考函数:
+domain_file(4), author_file(4), set_author(3)
+手册翻译:
+Phoebus@ZH 1997.Aug.15. (Writen 5/23/97)
+
+dumpallobj(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+dumpallobj() - 报告所有载入之物件的一些统计资料.
+函数语法:
+void dumpallobj( string | void );
+
+无传回值 dumpallobj( 字串 或 无参数 );
+函数用法:
+这个函数会印出所有已经载入之物件列表. 如果没有指定
+参数, 这些资讯会倾印在 /OBJ_DUMP 这个档案里. 如果
+有指定参数, 则参数就是指定要输出的档案名称.
+参考函数:
+mud_status(3), debug_info(3)
+
+手册翻译: Phoebus@ZH 97.Feb.04. (Writen 5/23/97)
+
+ 

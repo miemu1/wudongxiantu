@@ -1,0 +1,99 @@
+MUDOS
+—————————————————————
+综合地介绍MUD运行平台（MUDOS）
+—————————————————————————  
+mudos精讲（13） 
+
+origin(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+origin() - 判断目前的函式是如何被呼叫的.
+函数语法:
+int origin( void );
+
+整数 origin( 无参数 );
+函数用法:
+传回一个整数值, 指出目前的函式是如何被呼叫的.
+传回值代表的意义如下:
+
+1 驱动程式 (driver) (heart_beats, 其他)
+
+2 区域函式的呼叫 (local function call)
+
+4 call_other()
+
+8 simul_efun 物件, 经由 simul_efun 呼叫
+
+16 call_out()
+
+32 被超越函式 (efun) 呼叫 (sort_array, 其他)
+参考函数:
+previous_object(3), /include/origin.h
+手册翻译:
+Phoebus@ZH 97.Apr.24. (Writen 5/23/97)
+
+objects(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+objects - 传回一个已载入之物件的阵列 (array).
+函数语法:
+object *objects( string func, object ob );
+object *objects( function f );
+
+物件 *objects( 字串 func, 物件 ob );
+物件 *objects( 函式指标 f );
+函数用法:
+objects() 传回 mud 里已经载入之物件的阵列. 请注意,
+如果系统设定的最大阵列长度 (maximum array size)太低,
+objects() 传回的阵列内容会中断在最大长度的地方. 这样
+一来, objects() 也就没有什麽用处.
+
+如果指定了 func 和 ob 两个参数, 则会呼叫 ob->func(),
+并以所有已经载入的物件作为 func() 的参数. 如果函式传
+回非零值, 此物件就会被 objects() 传回来. 如果是零则
+不会.
+
+如果指定 f, 所有已载入的物件都会呼叫函式指标 f. 例如:
+objects( (: clonep :) ) 会传回现存全部的复制物件的列表.
+参考函数:
+livings(3), users(3)
+手册翻译:
+Phoebus@ZH 97.Apr.24. (Writen 5/23/97)
+
+opcprof(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+opcprof() - 报告一些超越函式 (efuns) 被呼叫的频率.
+函数语法:
+void opcprof( string | void );
+
+无传回值 opcprof( 字串 或 无参数 );
+函数用法:
+这个函式印出每一个超越函式 (efunction) 和超越操作子
+(eoperator) 的统计数字列表. 如果没有指定参数, 所有的
+资料都会倾印到 /OPCPROF.efun 和 /OPCPROF.eoper 这两
+个档案里. 如果指定了一个字串, 则此字串就用作倾印的档
+案名称.
+参考函数:
+function_profile(3)
+手册翻译:
+Phoebus@ZH 97.Apr.24. (Writen 5/23/97)
+
+objectp(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+objectp() - 判断一个指定的变数是否为一个物件 (object).
+函数语法:
+int objectp( mixed arg );
+
+整数 objectp( 混合 arg );
+函数用法:
+如果 arg 是一个物件就传回 1.
+参考函数:
+mapp(3), stringp(3), pointerp(3), intp(3), bufferp(3),
+floatp(3), functionp(3), nullp(3), undefinedp(3),
+errorp(3)
+手册翻译:
+Phoebus@ZH 97.Apr.24. (Writen 5/23/97)
+
+ 

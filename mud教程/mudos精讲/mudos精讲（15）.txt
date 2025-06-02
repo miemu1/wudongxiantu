@@ -1,0 +1,220 @@
+MUDOS
+—————————————————————
+综合地介绍MUD运行平台（MUDOS）
+—————————————————————————
+  
+mudos精讲（15） 
+
+query_verb(3) MudOS v21c2 (7 Jul 1996)
+
+函数名称:
+query_verb() - 传回现在执行的命令名称.
+函数语法:
+string query_verb( void );
+
+字串 query_verb( 无参数 );
+函数用法:
+传回目前执行的命令名称. 如果现在没有执行任何命令,
+则传回 0. 这个函式的用途是: 当好几个命令会执行同一
+个函式时, 判断到底是哪一个命令呼叫此函式.
+参考函数:
+add_action(3)
+手册翻译:
+Phoebus@ZH 97.May.2. (Writen 5/23/97)
+
+query_heart_beat(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+query_heart_beat() - 询问一个物件的心跳 (heart beat) 状况.
+函数语法:
+int query_heart_beat( object );
+
+整数 query_heart_beat( 物件 );
+函数用法:
+对於已经呼叫过 set_heart_beat() 函式的物件,
+query_heart_beat() 传回其心跳值. 如果不指定 ob, 则预设为
+目前的物件. 没有心跳的物件则传回 0.
+参考函数:
+heart_beat(4), set_heart_beat(3)
+手册翻译:
+Phoebus@ZH 97.Apr.30. (Writen 5/23/97)
+
+query_host_name(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+query_host_name() - 传回使用的主机名称 (host name)
+函数语法:
+string query_host_name( void );
+
+字串 query_host_name( 无参数 );
+函数用法:
+query_host_name() 传回使用的主机名称.
+传回值:
+如果询问主机成功, 则传回一个字串.
+
+如果失败, 则传回一个空字串.
+参考函数:
+resolve(3), socket_address(3), query_ip_name(3),
+query_ip_number(3)
+手册翻译:
+Phoebus@ZH 97.Apr.30. (Writen 5/23/97)
+
+query_idle(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+query_idle() - 询问一个互动的 (interactive) 玩家已经
+发呆 (idle) 几秒.
+函数语法:
+int query_idle( object ob );
+
+整数 query_idle( 物件 ob );
+函数用法:
+询问一个互动的 (interactive) 玩家物件已经发呆 (idle) 几秒.
+参考函数:
+in_edit(3), in_input(3)
+手册翻译:
+Phoebus@ZH 97.May.1. (Writen 5/23/97)
+
+query_ip_name(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+query_ip_name() - 传回指定玩家的 ip 名称.
+函数语法:
+string query_ip_name( object ob );
+
+字串 query_ip_name( 物件 ob );
+函数用法:
+传回玩家 ob 的 IP 位址. 一个叫做 addr_server 的非同步
+程序会找出这些名称. 如果找不到 ip 名称, 就会传回 ip 号码.
+参考函数:
+query_ip_number(3), query_host_name(3), resolve(3),
+socket_address(3)
+手册翻译:
+Phoebus@ZH 97.May.1. (Writen 5/23/97)
+
+query_ip_number(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+query_ip_number() - 传回玩家物件的 ip 号码.
+函数语法:
+string query_ip_number( object ob );
+
+字串 query_ip_number( 物件 ob );
+函数用法:
+传回玩家 ob 的 ip 号码 (aaa.bbb.ccc.ddd 的格式).
+参考函数:
+query_ip_name(3), query_host_name(3), resolve(3),
+socket_address(3)
+手册翻译:
+Phoebus@ZH 97.May.1. (Writen 5/23/97)
+
+query_load_average(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+query_load_average() - 报告 mud 的系统平均负载量 (load
+average).
+函数语法:
+string query_load_average( void );
+
+字串 query_load_average( 无参数 );
+函数用法:
+这个函式传回一个字串, 报告两个统计数字:
+(1) 平均每秒钟的使用者命令数量.
+(2) 平均每秒钟编译的程式行数.
+参考函数:
+rusage(3)
+手册翻译:
+Phoebus@ZH 97.May.1. (Writen 5/23/97)
+
+query_privs(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+query_privs() - 传回一个物件的私有字串 (privs string).
+函数语法:
+string query_privs( object ob );
+
+字串 query_privs( 物件 ob );
+函数用法:
+传回一个物件的私有字串. 此私有字串由主宰物件 (master
+object) 於编译程式时, privs_file() 函式决定. 而此字
+串可由 set_privs() 函式更改.
+
+query_privs() 只有在驱动程式 (driver) 编译时, 定义
+PRIVS 才有效.
+参考函数:
+privs_file(4), set_privs(3)
+手册翻译:
+Phoebus@ZH 97.Jul.25. (Writen 5/23/97)
+
+shadowp(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+shadowp() - 判断指定的物件是否为其他物件的投影
+(shadow).
+函数语法:
+object shadowp( object ob );
+
+物件 shadowp( 物件 ob );
+函数用法:
+传回投影 ob 的物件, 如果 ob 不是任何物件的投影, 则
+传回 0.
+参考函数:
+shadow(3), objectp(3), query_shadowing(3),
+valid_shadow(4)
+手册翻译:
+Phoebus@ZH 97.Jul.25. (Writen 5/23/97)
+译注:
+此份 query_shadowing 文件, 在 LP MudOSv21c7 所附文件中
+即为 shadowp 之内容. 原文附件中, 无 shadowp 之文件.
+query_snoop(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+query_snoop() - 传回谁正在监听指定的互动 (interactive) 物件.
+函数语法:
+object query_snoop( object ob );
+
+物件 query_snoop( 物件 ob );
+函数用法:
+如果互动物件 ob 正被另一个互动物件监听, 就传回监听者物件.
+如果没有监听者, 则传回 0.
+参考函数:
+snoop(3), query_snooping(3)
+手册翻译:
+Phoebus@ZH 97.May.1. (Writen 5/23/97)
+
+query_snooping(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+query_snooping() - 传回正在监听 (snoop) 的物件.
+函数语法:
+object query_snooping( object ob );
+
+物件 query_snooping( 物件 ob );
+函数用法:
+如果互动 (interactive) 物件 ob 正在监听另一个互动物件,
+则传回被监听的物件. 如果 ob 没有监听其他物件, 则传回 0.
+参考函数:
+snoop(3), query_snoop(3)
+手册翻译:
+Phoebus@ZH 97.May.1 (Writen 5/23/97)
+
+query_ed_mode(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+query_ed_mode() - 询问目前编辑程式 (ed) 执行的状态.
+函数语法:
+int query_ed_mode()
+
+整数 query_ed_mode()
+函数用法:
+寻问目前此物件执行编辑程式 (ed) 的状态. query_ed_mode() 的
+传回值如下:
+
+0 - 此物件正在普通的 ed 提示符号 ( ':', 冒号) 下.
+-1 - 此物件并没有进入 ed 里
+-2 - 此物件正处於 ed 求助说明第一页的 more 提示符号下.
+>0 - 此物件正在编辑一行内容, 这个数字就是第几行.
+手册翻译:
+Phoebus@ZH 97.Apr.30. (Writen 5/23/97)
+
+ 

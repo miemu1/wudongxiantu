@@ -1,0 +1,150 @@
+MUDOS
+—————————————————————
+综合地介绍MUD运行平台（MUDOS）
+—————————————————————————  
+mudos精讲（10） 
+
+lower_case(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+lower_case() - 转换一个指定字串的内容为小写
+函数语法:
+string lower_case( string str );
+
+字串 lower_case( 字串 str );
+函数用法:
+传回一个指定字串的小写样式 (原来的字串不会变更) .
+参考函数:
+capitalize(3)
+手册翻译:
+Phoebus@ZH 97.Feb.18. (Writen 5/23/97)
+
+living(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+living() - 判断一个指定的物件是否「活著」
+函数语法:
+int living( object ob );
+
+整数 living( 物件 ob );
+函数用法:
+如果 ob 是一个活著的物件则传回真值 (true, 即非零值)
+. (也就是说, ob 曾经呼叫过 enable_commands() )
+参考函数:
+interactive(3), enable_commands(3)
+手册翻译:
+Phoebus@ZH 97.Feb.18. (Writen 5/23/97)
+
+livings(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+livings() - 传回所有活著 (living) 物件的一个阵列
+函数语法:
+object *livings( void );
+
+物件 *livings( 无参数 );
+函数用法:
+传回指向所有活著物件之指标 (pointer) 的一个阵列.
+活著的物件是指曾经呼叫过 enable_commands() 的物件.
+参考函数:
+enable_commands(3), find_living(3), users(3),
+objects(3)
+手册翻译:
+Phoebus@ZH 97.Feb.18. (Writen 5/23/97)
+
+load_object(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+load_object() - 以档案名称来寻找或载入一个物件
+函数语法:
+object load_object( string str );
+
+物件 load_object( 字串 str );
+函数用法:
+用档案名称 str 寻找物件. 如果档案存在而且物件尚未
+载入, 则载入档案. 否则此函式就传回 0.
+参考函数:
+file_name(3), stat(3), find_object(3)
+手册翻译:
+Phoebus@ZH 97.Feb.18. (Writen 5/23/97)
+
+localtime(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+localtime() - 转换成本地时间
+函数语法:
+#include
+
+mixed *localtime( int time );
+
+混合 *localtime( 整数 time );
+函数用法:
+localtime() 转换一个整数的时间值 (像是 time() 传回
+值) 成为一个阵列. 这个阵列就是目前的本地时间. 在以
+前 time() 是函式用来取得格林威治时间 (GMT (UTC)),
+而本地时间的定义是与格林威治时间的差值. 现在这种换
+算的方法已经没有必要了. localtime() 传回秒数、分钟
+、小时、日期、月数、年数、星期几、一年中的第几天、
+本地的时区名称、本地时区与格林威治时区的差值. 这些
+时间的资讯直接由作业系统取得, 而且使驱动程式不需要
+用到 MUD 本身的设定档案.
+
+localtime() 传回一个包含上述时间资讯的阵列. 每一个
+时间值的索引关键字 (index) 由 localtime.h 定义.
+下表则整理出 localtime() 传回的阵列内容.
+
+int LT_SEC 秒数 (0..59)
+int LT_MIN 分钟 (0..59)
+int LT_HOUR 小时 (0..23)
+int LT_MDAY 日数 (1..31)
+int LT_MON 月数 (0..11)
+int LT_YEAR 年份 (必须大於 1900)
+int LT_WDAY 星期几 (0..6)
+int LT_YDAY 一年中的第几天 (0..365)
+int LT_GMTOFF 格林威治时间相差的秒数 (UTC)
+string LT_ZONE 本地时区的名称
+参考函数:
+ctime(3), time(3), time_expression(3), uptime(3),
+/include/localtime.h
+手册翻译:
+Phoebus@ZH 97.Feb.18. (Writen 5/23/97)
+
+log(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+log() - 传回一个浮点数的自然对数
+函数语法:
+float log( float f );
+
+浮点数 log( 浮点数 f );
+函数用法:
+传回参数 f 的自然对数. f 必须为正值.
+参数:
+exp(3), pow(3), sqrt(3)
+手册翻译:
+Phoebus@ZH 97.Feb.18. (Writen 5/23/97)
+
+link(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+link() - 将一个档案与另一个档案链结
+函数语法:
+void link( string original, string reference );
+
+无传回值 link( 字串 original, 字串 reference );
+函数用法:
+将档案 reference 链结到档案 original . link() 会使
+主宰物件 (master object) 呼叫 valid_link( original,
+reference). 如果 valid_link() 传回 0, 则这次的 link()
+失败. 如果 valid_link() 传回 1, 则还要由 rename() 以
+同样的参数 (argument) 呼叫, 判断是否成功. 如果 rename()
+, valid_link() 均传回 1, 则 link() 成功.
+
+注意: link() 函式创造一个强链结 (hard link) , 而非符
+号链结 (symbolic link).
+参考函数:
+rm(3), rmdir(3), rename(3), mkdir(3), cp(3)
+手册翻译:
+Phoebus@ZH 97.Feb.18. (Writen 5/23/97)
+
+ 

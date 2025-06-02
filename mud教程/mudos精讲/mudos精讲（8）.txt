@@ -1,0 +1,159 @@
+MUDOS
+—————————————————————
+综合地介绍MUD运行平台（MUDOS）
+—————————————————————————  
+mudos精讲（8） 
+
+intp(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+intp() - 判断一个给定的变数是否为一个整数.
+函数语法:
+int intp( mixed arg );
+
+整数 intp( 混合 arg );
+函数用法:
+如果 arg 是一个整数则传回 1, 不是则传回 0.
+参考函数:
+mapp(3), stringp(3), pointerp(3), objectp(3),
+bufferp(3), floatp(3), functionp(3), nullp(3),
+undefinedp(3), errorp(3)
+手册翻译:
+Phoebus@ZH 97.Feb.14. (Writen 5/23/97)
+
+in_edit(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+in_edit() - 判断一个玩家是否在文书编辑程式中.
+函数语法:
+string in_edit( object default : F_THIS_OBJECT );
+
+字串 in_edit( 物件 预设值 : F_THIS_OBJECT );
+函数用法:
+如果一个指定的物件正在文书编辑工作中, 就传回被编辑
+档案名称. 如果不是, 就传回 0.
+参考函数:
+ed(3), in_input(3)
+手册翻译:
+Phoebus@ZH 97.Feb.14. (Writen 5/23/97)
+
+in_input(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+in_input() - 判断一个玩家是否正在 input_to 函式的输入
+模式中
+函数语法:
+int in_input( object default : F_THIS_OBJECT );
+
+整数 in_input( 物件 预设值 : F_THIS_OBJECT );
+函数用法:
+如果物件正在 input_to 或是 get_char 函式的输入模式中,
+则传回 1.
+参考函数:
+get_char(3), input_to(3)
+手册翻译:
+Phoebus@ZH 97.Feb.14. (Writen 5/23/97)
+
+inherit_list(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+inherit_list() - 取得一个物件所继承的父物件 (parents)
+清单.
+函数语法:
+string *inherit_list( object obj );
+
+字串 *inherit_list( 物件 obj );
+函数用法:
+传回物件 obj 所继承之父物件的档案名称, 以字串阵列
+(array) 的形式传回. 例如: A 继承 B, 而 B 继承 C ,
+inherit_list(A) 会传回一个含有 B 的阵列, 而没有 C.
+参考函数:
+deep_inherit_list(3), inherits(3)
+手册翻译:
+Phoebus@ZH 97.Feb.14. (Writen 5/23/97)
+
+inherits(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+inherits() - 判断一个物件是否继承一个指定的档案
+函数语法:
+int inherits( string file, object obj );
+
+整数 inherits( 字串 file, 物件 obj );
+函数用法:
+如果 obj 不是继承 file, inherits() 传回 0. 如果 obj
+继承最新复制的 file 则传回 1, 如果继承旧的复制的 file
+则传回 2.
+参考函数:
+deep_inherit_list(3), inherit_list(3)
+手册翻译:
+Phoebus@ZH 97.Feb.14. (Writen 5/23/97)
+
+input_to(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+input_to() - 让下一行输入的内容送往一个指定的函式
+函数语法:
+varargs void input_to( string | function fun,
+int flag, ... );
+
+不定参数 无传回值 input_to( 字串 或 函式指标 fun,
+整数 flag, ... );
+函数用法:
+让使用者下一行输入的内容作为函式指标 fun 的参数.
+输入的内容不会被驱动程式 (driver) 分析 (parse).
+
+请注意, input_to 是「非阻隔性」的, 意即呼叫 input_to
+的物件不会为此暂停下来等待输入. 物件会继续执行
+input_to 之後的任何程式叙述. 在使用者尚未输入以前,
+不会呼叫函式指标 fun.
+
+如果同一个物件呼叫 input_to() 超过一次以上, 只有第一次
+呼叫有效.
+
+如果参数 flag 为非零值, 则玩家输入的内容不会回应 (echo)
+在画面上, 也不会出现在监听 (snoop) 的画面上 (在输入
+密码时很有用).
+
+使用者输入的一行内容会被当成呼叫函式指标 fun 时的第一
+个参数 (型态为字串). 在 flag 之後的参数会当成 fun 的
+第二个、第三个......等等的参数.
+参考函数:
+call_other(3), call_out(3), get_char(3)
+手册翻译:
+Phoebus@ZH 97.Feb.14. (Writen 5/23/97)
+
+interactive(3) LP MudOSv21c7 (7 Jul 1996)
+函数名称:
+interactive() - 判断一个指定的物件是否为「可互动的」
+(interactive)
+函数语法:
+int interactive( object ob );
+
+整数 interactive( 物件 ob );
+函数用法:
+如果 ob 是一个可互动的玩家, 就传回非零值. 如果玩家
+断线 (link dead), 则传回 0.
+参考函数:
+query_ip_number(3), query_ip_name(3), enable_commands(3)
+手册翻译:
+Phoebus@ZH 97.Feb.14. (Writen 5/23/97)
+
+implode(3) LP MudOSv21c7 (7 Jul 1996)
+
+函数名称:
+implode() - 连结多个字串.
+函数语法:
+string implode( mixed *arr, string del );
+
+字串 implode( 混合 *arr, 字串 del );
+函数用法:
+把阵列 arr 中可以找到的所有字串连结在一起, 每一个
+字串之间以字串 del 隔开. 这个函式只会使用阵列中的
+字串. 阵列中不是字串的元素 (element) 会予以忽略.
+参考函数:
+explode(3), sprintf(3)
+手册翻译:
+Phoebus@ZH 97.Feb.14. (Writen 5/23/97)
+
+ 
