@@ -1,0 +1,84 @@
+程式必须的概念
+ 2002-9-28   
+
+
+你必须了解, 在 LPC 中最重要的一个概念是物件(object) 当你想 做任何动作时, 
+都要考虑到这个动作是哪一个 object 所做的, 不然很 容易导致错误　
+LPC 的语法并不严谨, 有些场合为了省事可以将函数是 由哪个物件所作的省略掉, 
+例如我们在 create() 函数中最常看到的 set(), 事实上最严谨的写法应为 
+this_object()->set()　write() 则 为 this_player()->write()　 
+
+说这麽多只是为了强调一件事: 你能抓出一个物品的 object 变数 
+就能让他干一切他所能做的事　 
+
+[this_object() 与 this_player()] 
+
+这两个函数是系统所提供的函数, 也是最最好用的两个函数　
+在你写作一个物件 (房间　物品...etc.)时, this_object() 表示自己这个 物件　 
+
+this_player() 则比较复杂, 它会传回一个属於玩家型别的物件　 
+这个玩家在 init 中就是触发 init 的那个玩家　this_player() 会跟 
+著函数呼叫一直传递给所有被 init 呼叫的函数, 包括 add_action 中 
+所定义出来的函数, 在这些函数中, this_player() 就是表示做动作的那个人。　 
+
+[present() 函数] 
+
+常常, 我们只知道一个物件的名字, 却不能用个 object 型别的变数指向它　
+object present(string "id",object env) 函数在此时就 可以派上用场, 
+你给定你要找的物件的名字, 与它的所在地 (某个房间 或某个人), 
+函数就会传回他所找到的物件　 
+
+简单的想, present 函数其实就是在一个房间里找出某个名字的物 品的函数　
+它是同类型找物品的函数中最有用的一个, 
+其余的函数还有 find_player(), find_living() 等等　 
+
+[environment(), first_inventory(), next_inventory(), all_inventory()] 
+
+这一组函数跟物件所处在的位置有关　 
+environment(object ob) 传回了物件 ob 所处在的地点, 例如 ob 是个玩家或生物, 
+那麽这个函数会传回 ob 所在的房间; 如果 ob 是个物品, 
+那麽传回的就是携带著 ob 的生物, 或是 ob 所在的房间 (如果没有任何人带著它) 
+
+first_inventory(object ob) 所传回的是 ob 中的第一个物件,如果 ob 是房间,
+则传回第一个物品或是生物, 如果 ob 是生物, 则传 回他身上所带的第一个物品　 
+
+next_inventory(object ob) 通常跟著 first_inventory() 一起 使用　
+它的功用是传回 ob 的下一个物品, 在同一个 environment 中　 
+
+all_inventory(object ob) 类似於 first_inventory(), 
+但是它所传回的是包含了所有物品的一整个阵列。 
+
+
+
+原作者： 不详 
+来 源： 不详 
+
+
+LPC就是我们用来写MUD的语言啦，它的语法和C 基本一样。它独特之处在于有简单的
+OOP特性(简单但很有用:PP)，还有一个C里面没有的HASH表的类型：MAPPING
+LPC和C还有一个不同是其主函数是CREATE()而不是MAIN()。create()别写错哦:PP
+
+    LPC里面主要的(也是写MUD所足够的)数据类型有int,string,mapping,object,
+mixed。下面主要讲一下这些类型了。
+
+    因为整数类型对于写MUD已经足够，所以不用FLOAT了。同样的，因为我们的
+汉字是双字节的，所以CHAR类型其实也没用，只需要STRING 类型就可以了。
+STRING的定义，这里要提一下：string常量的赋值，假如是常量的话可以只用
+“连接”的办法代替string，例如:
+        string str = "我" "们" ;那么结果是str == "我们"
+同样的str =
+                "我"
+                "们";也是一样，空格与换行在LPC编译时是被忽略的，所以我们
+写MUD的时侯不仿多些TAB和换行，这样程序容易看些。
+当然，除了直接连接之外还可以用 + 连接。在有变量的时侯就要用了。例如：
+        string str0 = "我们";
+        string str1 = "和"+str0+"大家";
+        结果是str1 == "和我们大家"
+
+    mixed是一个比较特别的类型。mixed 类型的变量可以赋任何其他类型的值。
+这在未知变量类型的时侯非常有用。不过一般情况下很少会用到mixed。
+
+    LPC里面没有“指针”的概念。在变量名前面加 * 的定义表示数组。如int *a
+表示a 是整数数组。一般来说我们定义数组时是未知其大小的。所以定义时不用象
+C 那样给定大小。数组和MAPPING有些类似，所以将在下面和MAPPING一起讲它们
+的操作。
